@@ -1,23 +1,12 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <router-view name="nav" />
+  <router-view name="auth" />
+  <router-view class="default-route mt-16 lg:ml-56" />
 </template>
 
 <style lang="scss">
 #app {
   @apply font-inter text-mcc-text text-center;
-}
-nav{
-  @apply p-8;
-}
-nav a{
-  @apply font-bold text-mcc-text;
-}
-nav a.router-link-exact-active{
-  @apply text-mcc-anchor;
 }
 
 .skeleton{

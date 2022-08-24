@@ -8,6 +8,7 @@ module.exports = {
     extend: {
       colors: {
         'mcc-blue': '#2494D0',
+        'mcc-dark-blue': '#254d62',
         'mcc-light-gray': '#D3DEE5',
         'mcc-red': '#C92125',
         'mcc-dark-gray': '#887C7C',
