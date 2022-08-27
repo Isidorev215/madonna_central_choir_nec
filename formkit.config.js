@@ -1,8 +1,13 @@
-import { generateClasses } from '@formkit/themes'
+import { generateClasses } from '@formkit/themes';
+import { createAutoAnimatePlugin } from '@formkit/addons';
 
 export default {
+  plugins: [
+    createAutoAnimatePlugin()
+  ],
   config: {
     classes: generateClasses({
+      global: {},
       text: {
         outer: 'mb-5',
         label: 'block mb-1 font-bold text-sm',
