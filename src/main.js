@@ -6,6 +6,8 @@ import store from './store'
 import '@/assets/css/index.css'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import { plugin, defaultConfig } from '@formkit/vue'
+import tailwindTheme from '../formkit.config'
 
 const app = createApp(App) 
 
@@ -22,4 +24,5 @@ axios.defaults.headers.common = {
 app.use(store)
 app.use(router)
 app.use(VueAxios, axios)
+app.use(plugin, defaultConfig(tailwindTheme))
 app.mount('#app')
