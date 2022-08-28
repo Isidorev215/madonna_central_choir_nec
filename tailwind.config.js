@@ -2,6 +2,7 @@
 const formKitTailwind = require('@formkit/themes/tailwindcss');
 
 module.exports = {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
@@ -16,23 +17,10 @@ module.exports = {
         'mcc-dark-gray': '#887C7C',
         'mcc-text': '#2c3e50',
         'mcc-anchor': '#42b983'
-        // 'normal-black': '#2D3139',
-        // 'normal-green': '#128A5F',
-        // 'dark-green': '#0F734E',
-        // 'light-green': '#E4F8F1',
-        // 'tick-green': '#27AE60',
-        // 'normal-gray': '#F5F5F5',
-        // 'dark-gray-1': '#F1F2F6',
-        // 'dark-gray-2': '#CACACA',
-        // 'dark-gray-3': '#F0F2F5',
-        // 'normal-purple': '#A20CBA',
-        // 'light-purple': '#B07C9B',
-        // 'chat-left': '#f2f2f2',
-        // 'chat-right': '#e2f7cb',
       },
       backgroundImage: {
         'whatsapp-bg': "url('/src/assets/img/whatsapp-bg.jpg')",
-        'login-bg': "url('/src/assets/img/login-bg.png')",
+        'login-bg': "url('/src/assets/img/login-bg.webp')",
       },
       boxShadow: {
         's1': "0px 146px 88px rgba(31, 41, 62, 0.01), 0px 65px 65px rgba(31, 41, 62, 0.01), 0px 16px 36px rgba(31, 41, 62, 0.01), 0px 0px 0px rgba(31, 41, 62, 0.01);",

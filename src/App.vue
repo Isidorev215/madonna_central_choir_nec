@@ -6,7 +6,7 @@
 
 <style lang="scss">
 #app {
-  @apply font-inter text-mcc-text text-center;
+  @apply font-inter;
 }
 
 .skeleton{

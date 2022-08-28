@@ -6,8 +6,14 @@ import store from './store'
 import '@/assets/css/index.css'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-import { plugin, defaultConfig } from '@formkit/vue'
-import tailwindConfig from '../formkit.config'
+import { plugin, defaultConfig, createInput } from '@formkit/vue'
+import '@formkit/themes/genesis'
+import config from '../formkit.config'
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
+
+// formkit global otp component
+import OneTimePassword from './components/OneTimePassword.vue';
 
 const app = createApp(App) 
 
@@ -20,9 +26,16 @@ axios.defaults.headers.common = {
   Accept: 'application/json',
 };
 
-
+app.use(Toast, {})
 app.use(store)
 app.use(router)
 app.use(VueAxios, axios)
-app.use(plugin, defaultConfig( tailwindConfig ))
+app.use(plugin, defaultConfig({
+  ...config, 
+  inputs: {
+    otp: createInput(OneTimePassword, {
+      props: ['digits']
+    })
+  }
+}))
 app.mount('#app')

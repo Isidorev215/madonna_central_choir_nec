@@ -4,8 +4,11 @@
 @tailwind components;
 @tailwind utilities;
 
+html.dark{
+  color-scheme: dark;
+}
 body{
-  @apply bg-mcc-light-gray;
+  @apply bg-slate-50 text-slate-800 dark:bg-slate-800 dark:text-slate-50
 }
 /* *{
   outline: 1px solid black;
