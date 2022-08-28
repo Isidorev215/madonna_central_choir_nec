@@ -103,6 +103,18 @@ function handlePaste(e) {
 
 // This is the mounting tag. digits will be the number of input fields as props
 // <FormKit type="otp" digits="4" />
+// OR
+// <FormKit
+//   type="otp"
+//   digits="4"
+//   label="One-time password"
+//   inner-class="$reset"
+//   digit-class="mr-1"
+//   name="two_factor_code"
+//   help="We’ve sent a code to your phone."
+//   validation="required"
+//   validation-visibility="live"
+// />
 
 </script>
 

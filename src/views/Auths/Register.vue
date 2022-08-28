@@ -93,18 +93,6 @@
           </div>
         </div>
 
-        <FormKit
-          type="otp"
-          digits="4"
-          label="One-time password"
-          inner-class="$reset"
-          digit-class="mr-1"
-          name="two_factor_code"
-          help="We’ve sent a code to your phone."
-          validation="required"
-          validation-visibility="live"
-        />
-
       </FormKit>
     </div> 
     <div class="bg-login-bg h-full hidden md:block bg-cover bg-no-repeat bg-center border-l-2 border-gray-200"></div>
@@ -112,7 +100,7 @@
 </template>
 
 <script setup>
-  const { ref, reactive } = require("@vue/reactivity");
+  import { ref, reactive } from "@vue/reactivity";
 
   const submittingPending = ref(false);
   const registerForm = reactive({});
