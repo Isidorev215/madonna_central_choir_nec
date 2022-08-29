@@ -26,7 +26,7 @@ axios.defaults.headers.common = {
   Accept: 'application/json',
 };
 
-app.use(Toast, {})
+app.use(Toast, { position: 'top-right' })
 app.use(store)
 app.use(router)
 app.use(VueAxios, axios)

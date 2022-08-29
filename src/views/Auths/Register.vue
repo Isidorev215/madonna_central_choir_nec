@@ -100,7 +100,13 @@
 </template>
 
 <script setup>
-  import { ref, reactive } from "@vue/reactivity";
+import axios from 'axios'
+import { ref, reactive } from "@vue/reactivity";
+import { useToast } from 'vue-toastification';
+import { useRouter } from 'vue-router';
+
+  const toast = useToast();
+  const router = useRouter();
 
   const submittingPending = ref(false);
   const registerForm = reactive({});
@@ -111,7 +117,19 @@
   }
 
   const submitRegister = () => {
-    console.log(registerForm);
+    submittingPending.value = true
+    axios.post('register', registerForm)
+    .then(res => {
+      submittingPending.value = false;
+      toast.success(res.data.message);
+      router.push({ name: 'Login'});
+    })
+    .catch(err => {
+      submittingPending.value = false;
+      console.log(err)
+      toast.error(`${err.response.data.data.error}`);
+      toast.error(`${err.response.data.data.details[0] ?? ''}`);
+    })
   }
 </script>
 
