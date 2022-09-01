@@ -1,17 +1,48 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Navbar from '../components/Navbar.vue'
+import Footer from '../components/Footer.vue'
 import Dashboard from '../views/Dashboard.vue'
 import Login from '../views/Auths/Login.vue'
 import Register from '../views/Auths/Register.vue'
 import MembersList from '../views/MembersList.vue'
 
+import store from '../store'
+
+// Make sure store.config is not null before entering these routes
+const checkForConfig = (to, from, next) => {
+  console.debug('[router] checkConfigValid ', from, to)
+
+  function proceed(){
+    if(store.state.config){
+      next()
+    }else{
+      next({ name: 'Login' })
+    }
+  }
+  if(store.state.storeDataLoaded === false){
+    console.debug('[router]   waiting for store to be initialized...')
+    store.watch(
+      (state) => state.storeDataLoaded,
+      (value) => {
+        if(value === true){
+          proceed()
+        }
+      }
+    )
+  }else{
+    proceed()
+  }
+}
+
 const routes = [
   {
     path: '/',
-    name: 'dashboard',
+    name: 'Dashboard',
+    beforeEnter: checkForConfig,
     components: {
       default: Dashboard,
-      nav: Navbar
+      nav: Navbar,
+      footer: Footer,
     }
   },
   {
@@ -19,7 +50,8 @@ const routes = [
     name: 'members',
     components: {
       default: MembersList,
-      nav: Navbar
+      nav: Navbar,
+      footer: Footer,
     }
   },
   { path: '/login', name: 'Login', components: { auth: Login } },

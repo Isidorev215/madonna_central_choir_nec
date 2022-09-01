@@ -65,7 +65,14 @@
 </template>
 
 <script setup>
-  import { ref, reactive } from "@vue/reactivity";
+import moment from 'moment';
+import { ref, reactive } from "@vue/reactivity";
+import axios from "axios";
+import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
+
+  const toast = useToast();
+  const router = useRouter();
 
   const submittingPending = ref(false);
   const loginForm = reactive({});
@@ -76,7 +83,27 @@
   }
 
   const submitLogin = () => {
-    console.log(loginForm);
+    submittingPending.value = true
+    axios('login', {
+      method: 'post',
+      withCredentials: true,
+      data: loginForm
+    })
+    // axios.post('login', loginForm, { withCredentials: true })
+    .then(res => {
+      localStorage.setItem('token', res.data.data.token);
+      localStorage.setItem('token_expires', moment(res.data.data.expires));
+      window.location = '/';
+      toast.success('Login Successful');
+      submittingPending.value = false;
+    })
+    .catch(err => {
+      submittingPending.value = false;
+      toast.error(`${err.response.data.data.error}`);
+      if(err.response.data.data.details.length > 0){
+        toast.error(`${err.response.data.data.details[0]}`);
+      }
+    })
   }
 </script>
 

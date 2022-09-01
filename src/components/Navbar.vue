@@ -70,7 +70,7 @@ import Notifications from '@/components/Notifications.vue'
 import ProfileDrop from '@/components/ProfileDrop.vue'
 import SidebarLinks from '@/components/SidebarLinks.vue'
 import { reactive, ref } from '@vue/reactivity'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { watch } from '@vue/runtime-core'
 import { useDark, useToggle } from '@vueuse/core'
 export default {
@@ -79,6 +79,7 @@ export default {
   name: 'NavBar',
   setup(){
     const route = useRoute();
+    const router = useRouter();
 
     // refs for primitives
     const slide_open = ref(false);
@@ -108,7 +109,9 @@ export default {
     }
 
     const logout = () => {
-      console.log('Log User Out')
+      localStorage.removeItem('token');
+      localStorage.removeItem('token_expires');
+      router.push('/login');
     }
 
     watch(route, () => {

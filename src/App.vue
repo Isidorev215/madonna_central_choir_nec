@@ -1,8 +1,35 @@
 <template>
   <router-view name="nav" />
   <router-view name="auth" />
-  <router-view class="default-route mt-16 lg:ml-56" />
+  <router-view class="default-route min-h-[calc(100vh-4rem)] mt-16 lg:ml-56 p-4" />
+  <router-view name="footer" class="lg:ml-56"/>
+  <Spinner v-if="configPending"/>
 </template>
+
+<script setup>
+import { onMounted, ref } from 'vue';
+import axios from 'axios';
+import { useStore } from 'vuex';
+import { useToast } from 'vue-toastification';
+
+const store = useStore();
+const configPending = ref(false);
+const toast = useToast();
+
+onMounted(() => {
+  configPending.value = true;
+  axios.get('config')
+  .then(res => {
+    configPending.value = false;
+    store.commit('updateConfig', res.data.data)
+  })
+  .catch(err => {
+    configPending.value = false;
+    store.commit('updateConfig', null);
+    toast.error(`${err?.response?.data?.data?.error}`);
+  })
+})
+</script>
 
 <style lang="scss">
 #app {

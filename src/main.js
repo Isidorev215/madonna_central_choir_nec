@@ -14,18 +14,27 @@ import "vue-toastification/dist/index.css";
 
 // formkit global otp component
 import OneTimePassword from './components/OneTimePassword.vue';
+import LoadingSpinner from './components/LoadingSpinner.vue'
+import NoFixedSpinner from './components/NoFixedSpinner.vue'
 
 const app = createApp(App) 
 
 app.config.globalProperties.$appUrl = window.location.origin;
 app.config.globalProperties.$serverUrl = process.env.VUE_APP_BASE_URL;
 
+axios.defaults.withCredentials = true;
 axios.defaults.baseURL = process.env.VUE_APP_BASE_URL + "api/v1";
+let token = localStorage.getItem("token");
 axios.defaults.headers.common = {
-  // Authorization: "Bearer " + token,
-  Accept: 'application/json',
+  // "Access-Control-Allow-Credentials": true
+  Authorization: token,
+  Accept: "application/json",
+  "Content-Type": "application/json",
 };
 
+
+app.component('Spinner', LoadingSpinner)
+app.component('NoFixedSpinner', NoFixedSpinner)
 app.use(Toast, { position: 'top-right' })
 app.use(store)
 app.use(router)

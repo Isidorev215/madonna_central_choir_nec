@@ -126,9 +126,10 @@ import { useRouter } from 'vue-router';
     })
     .catch(err => {
       submittingPending.value = false;
-      console.log(err)
       toast.error(`${err.response.data.data.error}`);
-      toast.error(`${err.response.data.data.details[0] ?? ''}`);
+      if(err.response.data.data.details.length > 0){
+        toast.error(`${err.response.data.data.details[0]}`);
+      }
     })
   }
 </script>
