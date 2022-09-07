@@ -8,7 +8,7 @@
       <div class="icon-wrapper flex px-1 py-2 justify-center items-center cursor-pointer lg:hidden" @click="openSideNav">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
       </div>
-      <span class="font-semibold text-sm md:text-base lg:text-xl">Isidore? change</span>
+      <span class="font-semibold text-sm md:text-base lg:text-xl">{{$route.meta?.name}}</span>
     </div>
 
     <div class="icons flex justify-end items-center space-x-2 lg:space-x-5">
@@ -33,13 +33,16 @@
       <div class="profile-drop h-full dropdown relative">
         <button @click="showProfileDrop" data-dropdown-toggle="dropdown" class="text-black relative font-medium lg:py-2 lg:px-3 lg:ring-1 ring-dark-gray-2 rounded-md text-sm text-center inline-flex items-center" type="button">
           <!-- <img v-if="user && user.profile_image" class="w-10 h-10 rounded-[10px] align-middle" :src="user.profile_image"> -->
-          <AvatarInitial name="Isidore? ?" :dimension="30" :rounded="9999" class="w-14 h-auto align-middle" />
-          <span class="hidden lg:flex justify-center items-center font-medium text-base ml-2">Isidore? change</span>
+          <AvatarInitial :name="`${config?.firstName} ${config?.lastName}`" :dimension="30" :rounded="9999" class="w-14 h-auto align-middle" />
+          <span class="hidden lg:flex justify-center items-center font-medium text-base ml-2">{{`${config?.firstName} ${config?.lastName}`}}</span>
           <svg class="w-4 h-4 ml-2 hidden lg:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
           </svg>
         </button>
-        <div :class="{'hidden': profileDrop === false, 'block': profileDrop === true }" class="absolute right-0 z-modal mt-3 bg-white divide-y divide-gray-100 rounded shadow w-44 ">
+        <div 
+          :class="{'hidden': profileDrop === false, 'block': profileDrop === true }" 
+          class="text-sm mt-3 border-b border-gray-100 lg:border lg:bg-white lg:absolute lg:top-full lg:left-0 lg:min-w-full lg:z-20 lg:rounded-lg lg:shadow-lg lg:dark:bg-slate-800 dark:border-slate-700"
+        >
           <ProfileDrop @logout="logout"/>
         </div>
       </div>
@@ -64,77 +67,63 @@
 
 </template>
 
-<script>
+<script setup>
 import AvatarInitial from '@/components/AvatarInitial.vue'
 import Notifications from '@/components/Notifications.vue'
 import ProfileDrop from '@/components/ProfileDrop.vue'
 import SidebarLinks from '@/components/SidebarLinks.vue'
 import { reactive, ref } from '@vue/reactivity'
 import { useRoute, useRouter } from 'vue-router'
-import { watch } from '@vue/runtime-core'
+import { computed, watch } from '@vue/runtime-core'
 import { useDark, useToggle } from '@vueuse/core'
-export default {
-  props: ['pageConfig'],
-  components: { AvatarInitial, Notifications, ProfileDrop, SidebarLinks },
-  name: 'NavBar',
-  setup(){
-    const route = useRoute();
-    const router = useRouter();
+import { useStore } from 'vuex'
+  const route = useRoute();
+  const router = useRouter();
+  const store = useStore();
 
-    // refs for primitives
-    const slide_open = ref(false);
-    const profileDrop = ref(false);
-    const notifDrop = ref(false);
-    const isDark = useDark();
+  // refs for primitives
+  const slide_open = ref(false);
+  const profileDrop = ref(false);
+  const notifDrop = ref(false);
+  const isDark = useDark();
 
-    // reactive for non primitives
-    const notifications = reactive([
-      { type: 'CALL', subject: 'Annonvement', message: 'A new annoucement is happening', action: '393939', formatted_created_at: '16th June'},
-      { type: 'NOT CALL', subject: 'Annonvement', message: 'A new annoucement is happening', action: '393939', formatted_created_at: '16th June'},
-      { type: 'CALL', subject: 'Annonvement', message: 'A new annoucement is happening', action: '393939', formatted_created_at: '16th June'},
-      { type: 'CALL is', subject: 'Annonvement', message: 'A new annoucement is happening', action: '393939', formatted_created_at: '16th June'},
-      { type: 'CALL', subject: 'Annonvement', message: 'A new annoucement is happening', action: '393939', formatted_created_at: '16th June'},
-    ])
+  // reactive for non primitives
+  const notifications = reactive([
+    { type: 'CALL', subject: 'Annonvement', message: 'A new annoucement is happening', action: '393939', formatted_created_at: '16th June'},
+    { type: 'NOT CALL', subject: 'Annonvement', message: 'A new annoucement is happening', action: '393939', formatted_created_at: '16th June'},
+    { type: 'CALL', subject: 'Annonvement', message: 'A new annoucement is happening', action: '393939', formatted_created_at: '16th June'},
+    { type: 'CALL is', subject: 'Annonvement', message: 'A new annoucement is happening', action: '393939', formatted_created_at: '16th June'},
+    { type: 'CALL', subject: 'Annonvement', message: 'A new annoucement is happening', action: '393939', formatted_created_at: '16th June'},
+  ])
 
-    const toggleDark = useToggle(isDark);
-    const openSideNav = () => slide_open.value = true;
-    const closeSideNav = () => slide_open.value = false;
-    const showProfileDrop = () => {
-      profileDrop.value = !profileDrop.value;
-      notifDrop.value = false;
-    }
-    const showNotifDrop = () => {
-      notifDrop.value = !notifDrop.value;
-      profileDrop.value = false;
-    }
+  // computed
+  const config = computed(() => {
+    return store.state.config;
+  })
 
-    const logout = () => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('token_expires');
-      router.push('/login');
-    }
+  const toggleDark = useToggle(isDark);
+  const openSideNav = () => slide_open.value = true;
+  const closeSideNav = () => slide_open.value = false;
+  const showProfileDrop = () => {
+    profileDrop.value = !profileDrop.value;
+    notifDrop.value = false;
+  }
+  const showNotifDrop = () => {
+    notifDrop.value = !notifDrop.value;
+    profileDrop.value = false;
+  }
 
-    watch(route, () => {
-      closeSideNav();
-      profileDrop.value = false;
-      notifDrop.value = false;
-    })
+  const logout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('token_expires');
+    router.push('/login');
+  }
 
-    return{
-      isDark,
-      slide_open,
-      profileDrop,
-      notifDrop,
-      notifications,
-      toggleDark,
-      openSideNav,
-      closeSideNav,
-      showProfileDrop,
-      showNotifDrop,
-      logout
-    }
-  },
-}
+  watch(route, () => {
+    closeSideNav();
+    profileDrop.value = false;
+    notifDrop.value = false;
+  })
 </script>
 
 <style>

@@ -5,6 +5,8 @@ import Dashboard from '../views/Dashboard.vue'
 import Login from '../views/Auths/Login.vue'
 import Register from '../views/Auths/Register.vue'
 import MembersList from '../views/MembersList.vue'
+import ProfilePage from '../views/ProfilePage.vue'
+import ManageChapters from '../views/ManageChapters.vue'
 
 import store from '../store'
 
@@ -43,19 +45,50 @@ const routes = [
       default: Dashboard,
       nav: Navbar,
       footer: Footer,
-    }
+    },
+    meta: { name: 'Dashboard'}
+  },
+  {
+    path: '/profile-page',
+    name: 'ProfilePage',
+    beforeEnter: checkForConfig,
+    components: {
+      default: ProfilePage,
+      nav: Navbar,
+      footer: Footer,
+    },
+    meta: { name: 'Profile page'}
+  },
+  {
+    path: '/chapters',
+    name: 'ManageChapters',
+    beforeEnter: checkForConfig,
+    components: {
+      default: ManageChapters,
+      nav: Navbar,
+      footer: Footer,
+    },
+    meta: { name: 'Manage chapters'}
   },
   {
     path: '/members',
-    name: 'members',
+    name: 'membersList',
     components: {
       default: MembersList,
       nav: Navbar,
       footer: Footer,
-    }
+    },
+    meta: { name: 'Members List'}
   },
   { path: '/login', name: 'Login', components: { auth: Login } },
   { path: '/register', name: 'Register', components: { auth: Register } },
+  { 
+    path: '/:catchAll(.*)', 
+    name: 'NotFound', 
+    components: {
+      auth: () => import('../views/NotFound.vue') 
+    }
+  },
 ]
 
 const router = createRouter({

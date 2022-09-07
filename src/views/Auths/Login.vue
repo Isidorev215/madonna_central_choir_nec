@@ -94,7 +94,7 @@ import { useToast } from "vue-toastification";
       localStorage.setItem('token', res.data.data.token);
       localStorage.setItem('token_expires', moment(res.data.data.expires));
       window.location = '/';
-      toast.success('Login Successful');
+      toast.success(res.data.data.message);
       submittingPending.value = false;
     })
     .catch(err => {

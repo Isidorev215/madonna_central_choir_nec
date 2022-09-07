@@ -121,7 +121,7 @@ import { useRouter } from 'vue-router';
     axios.post('register', registerForm)
     .then(res => {
       submittingPending.value = false;
-      toast.success(res.data.message);
+      toast.success(res.data.data.message);
       router.push({ name: 'Login'});
     })
     .catch(err => {
