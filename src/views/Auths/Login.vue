@@ -45,15 +45,15 @@
         
         <div class="formkit-outer">
           <div class="wrapper w-full flex flex-col justify-start">
-            <button v-if="submittingPending" class=" w-full p-4 bg-mcc-blue text-white font-medium text-center rounded-md flex justify-center items-center space-x-2" disabled>
+            <button v-if="loggingIn" class=" w-full p-4 bg-mcc-blue text-white font-medium text-center rounded-md flex justify-center items-center space-x-2" disabled>
               <svg class="animate-spin ml-2 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              <span>Submitting...</span>
+              <span>Logging In...</span>
             </button>
             <button type="submit" v-else class=" w-full p-4 bg-mcc-blue text-white font-medium text-center rounded-md">
-              Submit
+              Login
             </button>
           </div>
         </div>
@@ -66,44 +66,26 @@
 
 <script setup>
 import moment from 'moment';
-import { ref, reactive } from "@vue/reactivity";
-import axios from "axios";
-import { useRouter } from "vue-router";
-import { useToast } from "vue-toastification";
+import { reactive } from "@vue/reactivity";
+import useAuthentication from '@/composables/useAuthentication';
 
-  const toast = useToast();
-  const router = useRouter();
-
-  const submittingPending = ref(false);
   const loginForm = reactive({});
+
+  // composables
+  const { error: loginError, isPending: loggingIn, login } = useAuthentication();
 
   const handleIconClick = (node, e) => {
     node.props.suffixIcon = node.props.suffixIcon === 'eye' ? 'eyeClosed' : 'eye'
     node.props.type = node.props.type === 'password' ? 'text' : 'password'
   }
 
-  const submitLogin = () => {
-    submittingPending.value = true
-    axios('login', {
-      method: 'post',
-      withCredentials: true,
-      data: loginForm
-    })
-    // axios.post('login', loginForm, { withCredentials: true })
-    .then(res => {
+  const submitLogin = async () => {
+    const res = await login(loginForm);
+    if(!loginError.value){
       localStorage.setItem('token', res.data.data.token);
       localStorage.setItem('token_expires', moment(res.data.data.expires));
       window.location = '/';
-      toast.success(res.data.data.message);
-      submittingPending.value = false;
-    })
-    .catch(err => {
-      submittingPending.value = false;
-      toast.error(`${err.response.data.data.error}`);
-      if(err.response.data.data.details.length > 0){
-        toast.error(`${err.response.data.data.details[0]}`);
-      }
-    })
+    }
   }
 </script>
 

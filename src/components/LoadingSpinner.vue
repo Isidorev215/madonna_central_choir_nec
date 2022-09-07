@@ -1,5 +1,5 @@
 <template>
-  <div class="loading-splash fixed z-spinner opacity-50 overflow-y-auto top-0 left-0 w-full h-full bg-gray-100 flex justify-center items-center">
+  <div class="loading-splash fixed z-spinner opacity-50 overflow-y-auto top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.4)] flex justify-center items-center">
     <span class="loading-button" type="button">
     <span class="inner"></span>
     <!-- loading... -->

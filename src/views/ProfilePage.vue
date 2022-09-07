@@ -9,7 +9,7 @@
             :actions="false"
             :incomplete-message="false"
             :config="{ validationVisibility: 'submit' }"
-            :disabled="profileUpdating"
+            :disabled="updating"
             v-model="profileUpdateForm"
             @submit="submitUpdate"
           >
@@ -17,11 +17,11 @@
               <div class="text-center flex justify-between">
                 <h6 class="text-blueGray-700 text-xl font-bold">Edit Information</h6>
                 <button type="submit" class="flex items-center bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150">
-                  <svg v-if="profileUpdating" class="animate-spin ml-2 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <svg v-if="updating" class="animate-spin ml-2 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  <span v-if="profileUpdating">Updating...</span>
+                  <span v-if="updating">Updating...</span>
                   <span v-else>Update</span>
                 </button>
               </div>
@@ -309,6 +309,13 @@
                 <ul class="not-italic font-normal text-sm">
                   <li class="mt-4">
                     <div class="header w-full flex justify-between items-center">
+                      <span>Birthday</span>
+                      <span v-if="!config?.birthday">Add</span>
+                    </div>
+                    <span class="content font-medium text-sm">{{config?.birthday}}</span>
+                  </li>
+                  <li class="mt-4">
+                    <div class="header w-full flex justify-between items-center">
                       <span>Graduation</span>
                       <span v-if="!config?.graduatedAt">Add</span>
                     </div>
@@ -320,13 +327,6 @@
                       <span v-if="!config?.RegularizedAt" class="text-red-400">Admin action</span>
                     </div>
                     <span class="content font-medium text-sm">{{config?.RegularizedAt}}</span>
-                  </li>
-                  <li class="mt-4">
-                    <div class="header w-full flex justify-between items-center">
-                      <span>Birthday</span>
-                      <span v-if="!config?.birthday">Add</span>
-                    </div>
-                    <span class="content font-medium text-sm">{{config?.birthday}}</span>
                   </li>
                 </ul>
               </div>
@@ -359,35 +359,27 @@
 
 <script setup>
 import { computed, reactive, ref } from "@vue/runtime-core";
-import axios from "axios";
 import { useRouter } from "vue-router";
-import { useToast } from "vue-toastification";
 import { useStore } from "vuex";
+import useUpdateDocument from '@/composables/useUpdateDocument';
 
 const store = useStore();
 const router = useRouter();
-const toast = useToast();
+
+// composables
+const { isPending: updating, error: updatingError, updateDocument } = useUpdateDocument();
+
 
 const profileUpdateForm = reactive({});
-const profileUpdating = ref(false);
 
 const config = computed(() => {
   return store.getters?.formattedConfig;
 });
 
 const submitUpdate = async () => {
-  profileUpdating.value = true;
-  try {
-    const res = await axios.put('/profile/update', profileUpdateForm)
-    profileUpdating.value = false;
-    toast.success(res.data.data.message);
+  await updateDocument('/profile/update', profileUpdateForm)
+  if(!updatingError.value){
     router.go();
-  }catch(err){
-    profileUpdating.value = false;
-    toast.error(`${err.response.data.data.error}`);
-    if(err.response.data.data.details.length > 0){
-      toast.error(`${err.response.data.data.details[0]}`);
-    }
   }
 }
 </script>

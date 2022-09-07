@@ -1,11 +1,11 @@
 <template>
   <div 
     class="top-menu lg:ml-56 h-16 fixed top-0 right-0 left-0 z-navbar flex items-center justify-between px-3 lg:bg-white text-white lg:text-black"
-    :class="[slide_open ? 'bg-mcc-dark-blue' : 'bg-mcc-blue']"
+    :class="[menuIsOpen ? 'bg-mcc-dark-blue' : 'bg-mcc-blue']"
   >
 
     <div class="icon-and-title flex justify-start items-center">
-      <div class="icon-wrapper flex px-1 py-2 justify-center items-center cursor-pointer lg:hidden" @click="openSideNav">
+      <div class="icon-wrapper flex px-1 py-2 justify-center items-center cursor-pointer lg:hidden" @click="openMenu">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
       </div>
       <span class="font-semibold text-sm md:text-base lg:text-xl">{{$route.meta?.name}}</span>
@@ -21,7 +21,7 @@
       </div> -->
 
       <div class="notifications-drop h-full cursor-pointer relative">
-        <button @click="showNotifDrop" class="flex justify-center items-center lg:p-1 lg:ring-1 ring-dark-gray-2 rounded-full">
+        <button @click="toggleNotifDrop()" class="flex justify-center items-center lg:p-1 lg:ring-1 ring-dark-gray-2 rounded-full">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
           <span class="badge">*</span>
         </button>
@@ -31,7 +31,7 @@
       </div>
 
       <div class="profile-drop h-full dropdown relative">
-        <button @click="showProfileDrop" data-dropdown-toggle="dropdown" class="text-black relative font-medium lg:py-2 lg:px-3 lg:ring-1 ring-dark-gray-2 rounded-md text-sm text-center inline-flex items-center" type="button">
+        <button @click="toggleProfileDrop()" data-dropdown-toggle="dropdown" class="text-black relative font-medium lg:py-2 lg:px-3 lg:ring-1 ring-dark-gray-2 rounded-md text-sm text-center inline-flex items-center" type="button">
           <!-- <img v-if="user && user.profile_image" class="w-10 h-10 rounded-[10px] align-middle" :src="user.profile_image"> -->
           <AvatarInitial :name="`${config?.firstName} ${config?.lastName}`" :dimension="30" :rounded="9999" class="w-14 h-auto align-middle" />
           <span class="hidden lg:flex justify-center items-center font-medium text-base ml-2">{{`${config?.firstName} ${config?.lastName}`}}</span>
@@ -52,13 +52,13 @@
 
   <nav
     class="sidenav-slide lg:hidden h-full fixed z-navbar w-full top-0 overflow-x-hidden duration-500"
-    :class="[slide_open ? 'left-0' : '-left-full']"
-    @click.self="closeSideNav"
+    :class="[menuIsOpen ? 'left-0' : '-left-full']"
+    @click.self="closeMenu"
   >
     <SidebarLinks class="w-56" />
   </nav>
   <transition name="backdrop">
-    <div v-if="slide_open" class="backdrop bg-[rgba(0,0,0,0.5)] lg:hidden fixed w-full h-full top-0 z-popUp"></div>
+    <div v-if="menuIsOpen" class="backdrop bg-[rgba(0,0,0,0.5)] lg:hidden fixed w-full h-full top-0 z-popUp"></div>
   </transition>
 
   <nav class="sidebar-fixed hidden lg:block h-full fixed z-navbar w-56 top-0 overflow-x-hidden">
@@ -77,12 +77,12 @@ import { useRoute, useRouter } from 'vue-router'
 import { computed, watch } from '@vue/runtime-core'
 import { useDark, useToggle } from '@vueuse/core'
 import { useStore } from 'vuex'
+import useMenu from '@/composables/useMenu';
   const route = useRoute();
   const router = useRouter();
   const store = useStore();
 
   // refs for primitives
-  const slide_open = ref(false);
   const profileDrop = ref(false);
   const notifDrop = ref(false);
   const isDark = useDark();
@@ -101,17 +101,12 @@ import { useStore } from 'vuex'
     return store.state.config;
   })
 
+  // Composables
+  const { isOpen: menuIsOpen, openMenu, closeMenu } = useMenu();
   const toggleDark = useToggle(isDark);
-  const openSideNav = () => slide_open.value = true;
-  const closeSideNav = () => slide_open.value = false;
-  const showProfileDrop = () => {
-    profileDrop.value = !profileDrop.value;
-    notifDrop.value = false;
-  }
-  const showNotifDrop = () => {
-    notifDrop.value = !notifDrop.value;
-    profileDrop.value = false;
-  }
+  const toggleProfileDrop = useToggle(profileDrop);
+  const toggleNotifDrop = useToggle(notifDrop);
+
 
   const logout = () => {
     localStorage.removeItem('token');
@@ -120,7 +115,7 @@ import { useStore } from 'vuex'
   }
 
   watch(route, () => {
-    closeSideNav();
+    closeMenu();
     profileDrop.value = false;
     notifDrop.value = false;
   })

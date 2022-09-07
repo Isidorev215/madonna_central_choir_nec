@@ -80,7 +80,7 @@
         
         <div class="formkit-outer">
           <div class="wrapper w-full flex flex-col justify-start">
-            <button v-if="submittingPending" class=" w-full p-4 bg-mcc-blue text-white font-medium text-center rounded-md flex justify-center items-center space-x-2" disabled>
+            <button v-if="registering" class=" w-full p-4 bg-mcc-blue text-white font-medium text-center rounded-md flex justify-center items-center space-x-2" disabled>
               <svg class="animate-spin ml-2 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -102,35 +102,25 @@
 <script setup>
 import axios from 'axios'
 import { ref, reactive } from "@vue/reactivity";
-import { useToast } from 'vue-toastification';
 import { useRouter } from 'vue-router';
-
-  const toast = useToast();
+import useAuthentication from '@/composables/useAuthentication'
   const router = useRouter();
 
-  const submittingPending = ref(false);
   const registerForm = reactive({});
+
+  // composables
+  const { error: registeringError, isPending: registering, register } = useAuthentication();
 
   const handleIconClick = (node, e) => {
     node.props.suffixIcon = node.props.suffixIcon === 'eye' ? 'eyeClosed' : 'eye'
     node.props.type = node.props.type === 'password' ? 'text' : 'password'
   }
 
-  const submitRegister = () => {
-    submittingPending.value = true
-    axios.post('register', registerForm)
-    .then(res => {
-      submittingPending.value = false;
-      toast.success(res.data.data.message);
-      router.push({ name: 'Login'});
-    })
-    .catch(err => {
-      submittingPending.value = false;
-      toast.error(`${err.response.data.data.error}`);
-      if(err.response.data.data.details.length > 0){
-        toast.error(`${err.response.data.data.details[0]}`);
-      }
-    })
+  const submitRegister = async () => {
+    await register(registerForm);
+    if(!registeringError.value){
+      router.push({ name: 'Login' });
+    }
   }
 </script>
 
