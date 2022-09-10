@@ -60,6 +60,17 @@ const routes = [
     meta: { name: 'Profile page'}
   },
   {
+    path: '/members',
+    name: 'membersList',
+    beforeEnter: checkForConfig,
+    components: {
+      default: MembersList,
+      nav: Navbar,
+      footer: Footer,
+    },
+    meta: { name: 'Members List'}
+  },
+  {
     path: '/chapters',
     name: 'ManageChapters',
     beforeEnter: checkForConfig,
@@ -69,16 +80,6 @@ const routes = [
       footer: Footer,
     },
     meta: { name: 'Manage chapters'}
-  },
-  {
-    path: '/members',
-    name: 'membersList',
-    components: {
-      default: MembersList,
-      nav: Navbar,
-      footer: Footer,
-    },
-    meta: { name: 'Members List'}
   },
   { path: '/login', name: 'Login', components: { auth: Login } },
   { path: '/register', name: 'Register', components: { auth: Register } },

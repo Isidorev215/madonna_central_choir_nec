@@ -84,7 +84,7 @@
                 <FormKit 
                   type="select"
                   label="Marital Status"
-                  name="marital_status"
+                  name="maritalStatus"
                   :options="[
                     { label: 'Marital Status', value: undefined },
                     { label: 'Married', value: 'Married' },
@@ -222,7 +222,7 @@
                   <div class="top w-full">
                     <h2 class="font-bold text-xl leading-7 flex justify-between">
                       <span>{{config?.firstName}} {{config?.lastName}}</span>
-                      <div v-if="config?.isAdmin" class="inline-flex items-center capitalize leading-none text-xs border rounded-full py-1 px-3 bg-blue-500 border-blue-500 text-white">
+                      <div v-if="config?.roles.includes('Admin')" class="inline-flex items-center capitalize leading-none text-xs border rounded-full py-1 px-3 bg-blue-500 border-blue-500 text-white">
                         <span>Admin</span>
                       </div>
                     </h2>
@@ -239,7 +239,7 @@
                           <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path></svg>
                           Location
                         </span>
-                        {{`${config?.state},` ?? 'Add'}} {{config?.state ? config?.country : null}}
+                        {{config?.state ?? 'Add'}} {{config?.state ? config?.country : null}}
                       </li>
                     </ul>
                   </div>
@@ -260,9 +260,9 @@
                         <div class="mt-4">
                           <div class="header w-full flex justify-between items-center">
                             <span>Marital Status</span>
-                            <span v-if="!config?.marital_status">Add</span>
+                            <span v-if="!config?.maritalStatus">Add</span>
                           </div>
-                          <span class="content font-medium text-sm">{{config?.marital_status}}</span>
+                          <span class="content font-medium text-sm">{{config?.maritalStatus}}</span>
                         </div>
                         <div class="mt-4">
                           <div class="header w-full flex justify-between items-center">
@@ -290,8 +290,8 @@
                             <span>Church</span>
                             <span v-if="!config?.church?.churchName">Add</span>
                           </div>
-                          <span class="content font-medium text-sm">{{`${config?.church?.churchName}, `}}</span>
-                          <span class="content font-medium text-sm">{{config?.church?.denomination}} Church</span>
+                          <span v-if="config?.church?.churchName" class="content font-medium text-sm">{{config?.church?.churchName}}</span>
+                          <span v-if="config?.church?.denomination" class="content font-medium text-sm">{{config?.church?.denomination}} Church</span>
                           <div class="content font-medium text-sm">{{config?.church?.state}}</div>
                           <div class="content font-medium text-sm">{{config?.church?.country}}</div>
                         </div>
