@@ -10,7 +10,6 @@
             :incomplete-message="false"
             :config="{ validationVisibility: 'submit' }"
             :disabled="updating"
-            v-model="profileUpdateForm"
             @submit="submitUpdate"
           >
             <div class="rounded-t bg-mcc-light-gray mb-0 px-6 py-6">
@@ -358,7 +357,7 @@
 </template>
 
 <script setup>
-import { computed, reactive, ref } from "@vue/runtime-core";
+import { computed } from "@vue/runtime-core";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import useUpdateDocument from '@/composables/useUpdateDocument';
@@ -369,15 +368,12 @@ const router = useRouter();
 // composables
 const { isPending: updating, error: updatingError, updateDocument } = useUpdateDocument();
 
-
-const profileUpdateForm = reactive({});
-
 const config = computed(() => {
   return store.getters?.formattedConfig;
 });
 
-const submitUpdate = async () => {
-  await updateDocument('/profile/update', profileUpdateForm)
+const submitUpdate = async (formData) => {
+  await updateDocument('/profile/update', formData)
   if(!updatingError.value){
     router.go();
   }
