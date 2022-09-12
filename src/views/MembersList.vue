@@ -5,8 +5,21 @@
         <div class="inner w-full mb-1">
           <div class="search-bar flex p-4">
             <div class="search-wrapper flex mb-0 items-center divide-x divide-gray-400">
-              <FormKit form-class="pr-3" type="form" :actions="false" :incomplete-message="false" :config="{ validationVisibility: 'submit' }">
-                <FormKit type="search" label-class="$reset hidden" placeholder="Search for a user" label="Search" />
+              <FormKit 
+                form-class="pr-3" 
+                type="form" 
+                :actions="false" 
+                :incomplete-message="false" 
+                :config="{ validationVisibility: 'submit' }"
+              >
+                <FormKit 
+                  v-model="filters.searchTerm"
+                  type="search" 
+                  label-class="$reset hidden"
+                  outer-class="$reset mb-0" 
+                  placeholder="Search by Name" 
+                  label="Search" 
+                />
               </FormKit>
               <div class="icons pl-2 mt-0 flex space-x-1">
                 <a class="text-gray-600 p-1 rounded justify-center cursor-pointer inline-flex">
@@ -32,45 +45,93 @@
           <div class="align-middle min-w-full inline-block">
             <div class="shadow overflow-hidden ring">
               <table class="table-fixed min-w-full">
-                <thead class="bg-gray-300">
+                <thead class="bg-gray-200">
                   <tr>
-                    <th scope="col" class="uppercase text-gray-500 font-medium text-xs text-left p-4">Name</th>
-                    <th scope="col" class="uppercase text-gray-500 font-medium text-xs text-left p-4">Position</th>
-                    <th scope="col" class="uppercase text-gray-500 font-medium text-xs text-left p-4">Country</th>
-                    <th scope="col" class="uppercase text-gray-500 font-medium text-xs text-left p-4">Status</th>
-                    <th scope="col" class="p-4"></th>
+                    <th scope="col" class="uppercase text-gray-600 font-medium text-sm text-left px-4 pt-4">Name</th>
+                    <th scope="col" class="uppercase text-gray-600 font-medium text-sm text-left px-4 pt-4">Position</th>
+                    <th scope="col" class="uppercase text-gray-600 font-medium text-sm text-left px-4 pt-4">Chapter</th>
+                    <th scope="col" class="uppercase text-gray-600 font-medium text-sm text-left px-4 pt-4">Campus</th>
+                    <th scope="col" class="uppercase text-gray-600 font-medium text-sm text-left px-4 pt-4">
+                      <FormKit 
+                        type="select"
+                        v-model="filters.approval"
+                        :options="[
+                          { label: 'Approval Status', value: 'No value' },
+                          { label: 'Approved', value: true },
+                          { label: 'Awaiting', value: false },
+                        ]"
+                      />
+                    </th>
+                    <th scope="col" class="uppercase text-gray-600 font-medium text-sm text-left px-4 pt-4">
+                      <FormKit 
+                        type="select"
+                        v-model="filters.dues"
+                        :options="[
+                          { label: 'Dues Status', value: 'No value' },
+                          { label: 'Current', value: true },
+                          { label: 'Late', value: false },
+                        ]"
+                      />
+                    </th>
+                    <th scope="col" class="uppercase text-gray-600 font-medium text-sm text-left px-4 pt-4">
+                      <FormKit 
+                        type="select"
+                        v-model="filters.regularization"
+                        :options="[
+                          { label: 'Regularization Status', value: 'No value' },
+                          { label: 'Regularized', value: true },
+                          { label: 'Faulting', value: false },
+                        ]"
+                      />
+                    </th>
+                    <th scope="col" class="px-4 pt-4"></th>
                   </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-opacity-100 border-gray-300">
-                  <tr v-for="user in 5" :key="user" class="border-opacity-100 border-gray-300">
+                <tbody v-if="filteredUsers.length > 0" class="bg-white divide-y divide-opacity-100 border-gray-300">
+                  <tr v-for="user in filteredUsers" :key="user._id" class="border-opacity-100 border-gray-300">
                     <td class="mr-0 p-4 whitespace-nowrap items-center flex space-x-6">
-                      <img class="rounded-full w-10 h-10" src="https://flowbite.com/application-ui/demo/images/users/neil-sims.png" alt="Neil Sims avatar" />
+                      <img v-if="user.profileImage" class="rounded-full w-10 h-10" src="https://flowbite.com/application-ui/demo/images/users/neil-sims.png" alt="Neil Sims avatar" />
+                      <AvatarInitial v-else :name="`${user.firstName} ${user.lastName}`" :rounded="9999" />
                       <div class="text-opacity-100 text-gray-500 font-normal text-sm">
-                        <div class="font-semibold text-base">Neil Sims</div>
-                        <div class="font-normal text-sm">neil.sims@flowbite.com</div>
+                        <div class="font-semibold text-base">{{user.firstName}} {{user.lastName}}</div>
+                        <div class="font-normal text-sm md:truncate">{{user.email}}</div>
                       </div>
                     </td>
-                    <td class="font-normal text-base p-4 whitespace-nowrap">Front-end developer</td>
-                    <td class="font-normal text-base p-4 whitespace-nowrap">United States</td>
+                    <td class="font-normal text-base p-4 whitespace-nowrap">{{user.membersPosition ?? '---'}}</td>
+                    <td class="font-normal text-base p-4 whitespace-nowrap">{{user.chapter ?? '---'}}</td>
+                    <td class="font-normal text-base p-4 whitespace-nowrap">{{user.campus ?? '---'}}</td>
                     <td class="font-normal text-base p-4 whitespace-nowrap">
                       <div class="flex items-center">
-                        <div class="b bg-green-400 rounded-full w-[0.625rem] h-[0.625rem] mr-2"></div>
-                        Active
+                        <div v-if="user.isApproved" class="bg-green-400 rounded-full w-[0.625rem] h-[0.625rem] mr-2"></div>
+                        <div v-else class="bg-red-400 rounded-full w-[0.625rem] h-[0.625rem] mr-2"></div>
+                        {{user.isApproved ? 'Approved' : 'Awaiting'}}
+                      </div>
+                    </td>
+                    <td class="font-normal text-base p-4 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <div v-if="user.isCurrentOnDues" class="bg-green-400 rounded-full w-[0.625rem] h-[0.625rem] mr-2"></div>
+                        <div v-else class="bg-red-400 rounded-full w-[0.625rem] h-[0.625rem] mr-2"></div>
+                        {{user.isCurrentOnDues ? 'Current' : 'Late'}}
+                      </div>
+                    </td>
+                    <td class="font-normal text-base p-4 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <div v-if="user.isRegularized" class="bg-green-400 rounded-full w-[0.625rem] h-[0.625rem] mr-2"></div>
+                        <div v-else class="bg-red-400 rounded-full w-[0.625rem] h-[0.625rem] mr-2"></div>
+                        {{user.isRegularized ? 'Regularized' : 'Faulting'}}
                       </div>
                     </td>
                     <td class="p-4 whitespace-nowrap space-x-2">
                       <button type="button" data-modal-toggle="user-modal" class="text-white font-normal text-sm text-center py-2 px-3 bg-mcc-blue rounded items-center inline-flex active:ring ring-blue-200">
-                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path>
-                          <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path>
-                        </svg>
-                        Edit user
-                      </button>
-                      <button type="button" data-modal-toggle="delete-user-modal" class="text-white font-normal text-sm text-center py-2 px-3 bg-mcc-blue rounded items-center inline-flex active:ring ring-blue-200">
-                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-                        Delete user
+                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M15 11h7v2h-7zm1 4h6v2h-6zm-2-8h8v2h-8zM4 19h10v-1c0-2.757-2.243-5-5-5H7c-2.757 0-5 2.243-5 5v1h2zm4-7c1.995 0 3.5-1.505 3.5-3.5S9.995 5 8 5 4.5 6.505 4.5 8.5 6.005 12 8 12z"></path></svg>
+                        Details
                       </button>
                     </td>
+                  </tr>
+                </tbody>
+                <tbody class="flex justify-center p-2" v-else>
+                  <tr class="w-full p-2 border-l-red-500 border-l-4 bg-red-300">
+                    No data available
                   </tr>
                 </tbody>
               </table>
@@ -79,20 +140,82 @@
         </div>
       </div>
       <div class="pagination-wrapper px-4">
-        <Pagination :total="35" :perPage="10" :currentPage="2" />
+        <Pagination :total="paginated_res?.total" :perPage="paginated_res?.perPage" :currentPage="currentPage" @pagechanged="onPageChange"  />
       </div>
     </section>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import getPaginatedData from '@/composables/getPaginatedData';
+import { computed, onMounted, reactive, ref } from "vue";
+import { useToast } from 'vue-toastification';
+import moment from 'moment';
 
-const query = ref("");
+const toast = useToast();
 
-const resetQuery = () => {
-  query.value = "";
-};
+const currentPage = ref(1);
+// filtering values
+const filters = reactive({
+  searchTerm: "",
+  approval: "No value",
+  dues: "No value",
+  regularization: "No value"
+})
+
+// composables
+const { 
+  data: users,
+  paginated_res,
+  error: getUsersError,
+  load: getUsers,
+  isPending: loading 
+} = getPaginatedData('/users', currentPage)
+
+// computed
+const filteredUsers = computed(() => {
+  let dateFormatUsers = users.value?.map(user => {
+    return {
+      ...user, 
+      createdAt: user?.createdAt ? moment(user?.createdAt).format('MMMM Do YYYY') : null,
+      updatedAt: user?.updatedAt ? moment(user?.updatedAt).format('MMMM Do YYYY') : null,
+      birthday: user?.birthday ? moment(user?.birthday).format('MMMM Do YYYY') : null,
+      regularizedAt: user?.regularizedAt ? moment(user?.regularizedAt).format('MMMM Do YYYY') : null,
+      graduatedAt: user?.graduatedAt ? moment(user?.graduatedAt).format('MMMM Do YYYY') : null,
+    }
+  })
+  let result = dateFormatUsers.filter(user => {
+    let fullName = `${user.firstName} ${user.lastName}`;
+    return fullName.toLowerCase().includes(filters.searchTerm.toLowerCase())
+  })
+  // Add you if statements to account for other filters that modify the res
+  // each if statement will bascically chain a filter method to the above oe
+  if(filters.approval !== "No value"){
+    result = result.filter(user => user.isApproved === filters.approval)
+  }
+  if(filters.dues !== "No value"){
+    result = result.filter(user => user.isCurrentOnDues === filters.dues)
+  }
+  if(filters.regularization !== "No value"){
+    result = result.filter(user => user.isRegularized === filters.regularization)
+  }
+  return result;
+})
+
+const onPageChange = async (page) => {
+  currentPage.value = page;
+  await getUsers();
+  if(getUsersError.value){
+    toast.error(`${err.response.data.data.error}`);
+  }
+}
+
+onMounted(async() => {
+  await getUsers();
+  if(getUsersError.value){
+    toast.error(`${err.response.data.data.error}`);
+  }
+})
 </script>
 
 <style></style>

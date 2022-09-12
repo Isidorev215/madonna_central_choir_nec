@@ -1,11 +1,11 @@
 <template>
   <ul class="w-full py-4 pagination list-none flex justify-end items-center space-x-2 lg:space-x-4">
-    <!-- <li class="pagination-item inline-block">
+    <li class="pagination-item inline-block">
       <button class="pag-btn" type="button" @click="onClickFirstPage" :disabled="isInFirstPage">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path></svg>
         First
       </button>
-    </li> -->
+    </li>
     <li class="pagination-item inline-block">
       <button class="pag-btn" type="button" @click="onClickPreviousPage" :disabled="isInFirstPage">
         <!-- <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> -->
@@ -27,12 +27,12 @@
         <!-- <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg> -->
       </button>
     </li>
-    <!-- <li class="pagination-item inline-block">
+    <li class="pagination-item inline-block">
       <button class="pag-btn" type="button" @click="onClickLastPage" :disabled="isInLastPage">
         Last
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg>
       </button>
-    </li> -->
+    </li>
   </ul>
 </template>
 

@@ -17,6 +17,7 @@ import OneTimePassword from './components/OneTimePassword.vue';
 import LoadingSpinner from './components/LoadingSpinner.vue'
 import NoFixedSpinner from './components/NoFixedSpinner.vue'
 import Pagination from '@/components/Pagination.vue'
+import AvatarInitial from '@/components/AvatarInitial.vue'
 
 const app = createApp(App) 
 
@@ -37,6 +38,8 @@ axios.defaults.headers.common = {
 app.component('Spinner', LoadingSpinner)
 app.component('NoFixedSpinner', NoFixedSpinner)
 app.component('Pagination', Pagination)
+app.component('AvatarInitial', AvatarInitial)
+
 app.use(Toast, { position: 'top-right' })
 app.use(store)
 app.use(router)
