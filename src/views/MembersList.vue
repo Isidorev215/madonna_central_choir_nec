@@ -122,7 +122,7 @@
                       </div>
                     </td>
                     <td class="p-4 whitespace-nowrap space-x-2">
-                      <button type="button" data-modal-toggle="user-modal" class="text-white font-normal text-sm text-center py-2 px-3 bg-mcc-blue rounded items-center inline-flex active:ring ring-blue-200">
+                      <button @click="openDetailsModal(user)" type="button" data-modal-toggle="user-modal" class="text-white font-normal text-sm text-center py-2 px-3 bg-mcc-blue rounded items-center inline-flex active:ring ring-blue-200">
                         <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M15 11h7v2h-7zm1 4h6v2h-6zm-2-8h8v2h-8zM4 19h10v-1c0-2.757-2.243-5-5-5H7c-2.757 0-5 2.243-5 5v1h2zm4-7c1.995 0 3.5-1.505 3.5-3.5S9.995 5 8 5 4.5 6.505 4.5 8.5 6.005 12 8 12z"></path></svg>
                         Details
                       </button>
@@ -143,10 +143,12 @@
         <Pagination :total="paginated_res?.total" :perPage="paginated_res?.perPage" :currentPage="currentPage" @pagechanged="onPageChange"  />
       </div>
     </section>
+    <SingleUserModal v-if="currentUserForModal" :user="currentUserForModal" @closeModal="currentUserForModal = null" />
   </div>
 </template>
 
 <script setup>
+import SingleUserModal from '@/components/SingleUserModal.vue';
 import getPaginatedData from '@/composables/getPaginatedData';
 import { computed, onMounted, reactive, ref } from "vue";
 import { useToast } from 'vue-toastification';
@@ -155,6 +157,7 @@ import moment from 'moment';
 const toast = useToast();
 
 const currentPage = ref(1);
+const currentUserForModal = ref(null);
 // filtering values
 const filters = reactive({
   searchTerm: "",
@@ -188,8 +191,6 @@ const filteredUsers = computed(() => {
     let fullName = `${user.firstName} ${user.lastName}`;
     return fullName.toLowerCase().includes(filters.searchTerm.toLowerCase())
   })
-  // Add you if statements to account for other filters that modify the res
-  // each if statement will bascically chain a filter method to the above oe
   if(filters.approval !== "No value"){
     result = result.filter(user => user.isApproved === filters.approval)
   }
@@ -202,6 +203,9 @@ const filteredUsers = computed(() => {
   return result;
 })
 
+const openDetailsModal = (user) => {
+  currentUserForModal.value = user;
+}
 const onPageChange = async (page) => {
   currentPage.value = page;
   await getUsers();
