@@ -1,12 +1,13 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Navbar from '../components/Navbar.vue'
-import Footer from '../components/Footer.vue'
-import Dashboard from '../views/Dashboard.vue'
-import Login from '../views/Auths/Login.vue'
-import Register from '../views/Auths/Register.vue'
-import MembersList from '../views/MembersList.vue'
-import ProfilePage from '../views/ProfilePage.vue'
-import ManageChapters from '../views/ManageChapters.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import Navbar from '../components/Navbar.vue';
+import Footer from '../components/Footer.vue';
+import Dashboard from '../views/Dashboard.vue';
+import Login from '../views/Auths/Login.vue';
+import Register from '../views/Auths/Register.vue';
+import MembersList from '../views/MembersList.vue';
+import ProfilePage from '../views/ProfilePage.vue';
+import ManageChapters from '../views/ManageChapters.vue';
+import PositionDetails from '../views/PositionDetails.vue';
 
 import store from '../store'
 
@@ -80,6 +81,17 @@ const routes = [
       footer: Footer,
     },
     meta: { name: 'Manage chapters'}
+  },
+  {
+    path: '/position/:id',
+    name: 'PositionDetails',
+    beforeEnter: checkForConfig,
+    components: {
+      default: PositionDetails,
+      nav: Navbar,
+      footer: Footer,
+    },
+    meta: { name: 'Position details'}
   },
   { path: '/login', name: 'Login', components: { auth: Login } },
   { path: '/register', name: 'Register', components: { auth: Register } },

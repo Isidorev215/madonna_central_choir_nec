@@ -148,7 +148,7 @@
 </template>
 
 <script setup>
-import SingleUserModal from '@/components/SingleUserModal.vue';
+import SingleUserModal from '@/components/Modals/SingleUserModal.vue';
 import getPaginatedData from '@/composables/getPaginatedData';
 import { computed, onMounted, reactive, ref } from "vue";
 import { useToast } from 'vue-toastification';

@@ -1,383 +1,181 @@
 <template>
-  <section class="p-6 lg:max-w-7xl lg:mx-auto">
-    <div class="px-2 md:px-4 mx-auto w-full">
-      <div class="flex flex-wrap">
-        <div class="w-full lg:w-8/12 px-4">
-          <FormKit 
-            form-class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-white border-0"
-            type="form"
-            :actions="false"
-            :incomplete-message="false"
-            :config="{ validationVisibility: 'submit' }"
-            :disabled="updating"
-            @submit="submitUpdate"
-          >
-            <div class="rounded-t bg-mcc-light-gray mb-0 px-6 py-6">
-              <div class="text-center flex justify-between">
-                <h6 class="text-blueGray-700 text-xl font-bold">Edit Information</h6>
-                <button type="submit" class="flex items-center bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150">
-                  <svg v-if="updating" class="animate-spin ml-2 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  <span v-if="updating">Updating...</span>
-                  <span v-else>Update</span>
-                </button>
-              </div>
-            </div>
-
-            <div class="flex-auto px-2 lg:px-5 p-8">
-              <div class="flex flex-wrap">
-                <FormKit 
-                  type="text"
-                  label="First Name"
-                  name="firstName"
-                  outer-class="w-full lg:w-6/12 px-4"
-                  wrapper-class="relative w-full mb-3"
-                  validation-visibility="blur"
-                />
-                <FormKit 
-                  type="text"
-                  label="Last Name"
-                  name="lastName"
-                  outer-class="w-full lg:w-6/12 px-4"
-                  wrapper-class="relative w-full mb-3"
-                  validation-visibility="blur"
-                />
-                <FormKit 
-                  type="text"
-                  label="Occupation"
-                  name="occupation"
-                  outer-class="w-full lg:w-6/12 px-4"
-                  wrapper-class="relative w-full mb-3"
-                  validation-visibility="blur"
-                />
-                <FormKit 
-                  type="tel"
-                  label="Phone"
-                  name="phone"
-                  placeholder="08012345689"
-                  outer-class="w-full lg:w-6/12 px-4"
-                  wrapper-class="relative w-full mb-3"
-                  validation-visibility="blur"
-                />
-                <FormKit 
-                  type="text"
-                  label="State"
-                  name="state"
-                  outer-class="w-full lg:w-6/12 px-4"
-                  wrapper-class="relative w-full mb-3"
-                  validation-visibility="blur"
-                />
-                <FormKit 
-                  type="text"
-                  label="Country"
-                  name="country"
-                  outer-class="w-full lg:w-6/12 px-4"
-                  wrapper-class="relative w-full mb-3"
-                  validation-visibility="blur"
-                />
-              </div>
-              <hr class="my-3 border-b-1 border-blueGray-300" />
-              <div class="flex flex-wrap">
-                <FormKit 
-                  type="select"
-                  label="Marital Status"
-                  name="maritalStatus"
-                  :options="[
-                    { label: 'Marital Status', value: undefined },
-                    { label: 'Married', value: 'Married' },
-                    { label: 'Single', value: 'Single' },
-                    { label: 'Clergy', value: 'Clergy' },
-                  ]"
-                  outer-class="w-full lg:w-6/12 px-4"
-                  wrapper-class="relative w-full mb-3"
-                  validation-visibility="blur"
-                />
-                <FormKit 
-                  type="select"
-                  label="Campus"
-                  name="campus"
-                  :options="[
-                    { label: 'Campus', value: undefined },
-                    { label: 'Elele', value: 'Elele' },
-                    { label: 'Akpugo', value: 'Akpugo' },
-                    { label: 'Okija', value: 'Okija' },
-                  ]"
-                  outer-class="w-full lg:w-6/12 px-4"
-                  wrapper-class="relative w-full mb-3"
-                  validation-visibility="blur"
-                />
-                <FormKit 
-                  type="select"
-                  label="Choir Part"
-                  name="choirPart"
-                  :options="[
-                    { label: 'Choir Part', value: undefined },
-                    { label: 'Soprano', value: 'Soprano' },
-                    { label: 'Alto', value: 'Alto' },
-                    { label: 'Tenor', value: 'Tenor' },
-                    { label: 'Bass', value: 'Bass' },
-                  ]"
-                  outer-class="w-full lg:w-6/12 px-4"
-                  wrapper-class="relative w-full mb-3"
-                  validation-visibility="blur"
-                />
-                <FormKit 
-                  type="text"
-                  label="Chapter"
-                  name="chapter"
-                  outer-class="w-full lg:w-6/12 px-4"
-                  wrapper-class="relative w-full mb-3"
-                  validation-visibility="blur"
-                />
-
-                <FormKit
-                  type="group"
-                  name="church"
-                >
-                  <FormKit 
-                    type="text"
-                    label="Church Name (Local Parish)"
-                    name="churchName"
-                    :value="config?.church?.churchName"
-                    outer-class="w-full lg:w-6/12 px-4"
-                    wrapper-class="relative w-full mb-3"
-                    validation-visibility="blur"
-                  />
-                  <FormKit 
-                    type="text"
-                    label="Denomination"
-                    name="denomination"
-                    :value="config?.church?.denomination"
-                    outer-class="w-full lg:w-6/12 px-4"
-                    wrapper-class="relative w-full mb-3"
-                    validation-visibility="blur"
-                  />
-                  <FormKit 
-                    type="text"
-                    label="State (Church)"
-                    name="state"
-                    :value="config?.church?.state"
-                    outer-class="w-full lg:w-6/12 px-4"
-                    wrapper-class="relative w-full mb-3"
-                    validation-visibility="blur"
-                  />
-                  <FormKit 
-                    type="text"
-                    label="Country (Church)"
-                    name="country"
-                    :value="config?.church?.country"
-                    outer-class="w-full lg:w-6/12 px-4"
-                    wrapper-class="relative w-full mb-3"
-                    validation-visibility="blur"
-                  />
-                </FormKit>
-
-                <FormKit 
-                  type="date"
-                  label="Graduation Date"
-                  name="graduatedAt"
-                  outer-class="w-full lg:w-6/12 px-4"
-                  wrapper-class="relative w-full mb-3"
-                  validation-visibility="blur"
-                />
-                <FormKit 
-                  type="date"
-                  label="Birthday"
-                  name="birthday"
-                  outer-class="w-full lg:w-6/12 px-4"
-                  wrapper-class="relative w-full mb-3"
-                  validation-visibility="blur"
-                />
-              </div>
-              <hr class="my-3 border-b-1 border-blueGray-300" />
-            </div>
-          </FormKit>
+  <div class="flex flex-wrap flex-row">
+    <div class="flex-shrink max-w-full px-4 w-full">
+      <p class="text-xl font-bold mt-3 mb-5">Profile</p>
+    </div>
+    <div class="flex-shrink max-w-full px-4 w-full mb-6">
+      <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg mb-8">
+        <div class="group h-40 overflow-hidden relative">
+          <img :src="config?.coverImage ? config?.coverImage : require(`@/assets/img/default_profile_cover.jpg`)" class="w-full" />
+          <div class="absolute top-4 right-2">
+            <button @click="openEditProfileModal" type="button" class="group-hover:opacity-80 opacity-0 py-1.5 px-3 inline-block text-center mb-3 rounded leading-5 text-gray-800 bg-gray-200 border border-gray-200 hover:text-gray-900 hover:bg-gray-300 hover:ring-0 hover:border-gray-300 focus:bg-gray-300 focus:border-gray-300 focus:outline-none focus:ring-0">
+              Edit cover
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="inline-block bi bi-camera" viewBox="0 0 16 16">
+                <path d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1v6zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z"></path>
+                <path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"></path>
+              </svg>
+            </button>
+          </div>
         </div>
-        <div class="w-full lg:w-4/12 px-4">
-          <div class="card relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow rounded-lg mt-16">
-            <div class="px-6 pb-4">
-              <div class="flex flex-wrap justify-center">
-                <div class="w-full px-4 flex justify-center -mt-16">
-                  <div class="relative w-24 h-24 md:w-36 md:h-36">
-                    <img src="https://avatars.dicebear.com/api/avataaars/example.svg?options[top][]=shortHair&amp;options[accessoriesChance]=93" alt="John Doe" class="rounded-full block h-auto w-full max-w-full bg-gray-100 dark:bg-slate-800" />
-                    <div class="absolute right-0 bottom-0">
-                      <div class="flex items-stretch justify-start relative">
-                        <label class="inline-flex">
-                          <a class="inline-flex cursor-pointer justify-center items-center whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border rounded-full border-blue-600 dark:border-blue-500 ring-blue-300 dark:ring-blue-700 bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 hover:border-blue-700 hover:dark:bg-blue-600 hover:dark:border-blue-600 p-1 w-12 h-12" disabled="false">
-                            <span class="inline-flex justify-center items-center w-6 h-6">
-                              <svg viewBox="0 0 24 24" width="24" height="24" class="inline-block"><path fill="currentColor" d="M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z"></path></svg></span>
-                              <!---->
-                          </a>
-                          <input type="file" class="absolute top-0 left-0 w-full h-full opacity-0 outline-none cursor-pointer -z-1" />
-                        </label>
-                        <!---->
-                      </div>
-                    </div>
-                  </div>
+        <div class="flex justify-center -mt-10 relative">
+          <a @click="openEditProfileModal" class="z-30 group">
+
+            <AvatarInitial :image="config.profileImage" :name="`${config.firstName} ${config.lastName}`" :dimension="96" :rounded="9999" class="rounded-full w-24 h-24 bg-gray-200 border-solid border-white border-2 -mt-3" />
+
+            <div title="Change avatar" class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 text-white dark:text-gray-900">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-6 h-6 bi bi-camera" viewBox="0 0 16 16">
+                <path d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1v6zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z"></path>
+                <path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"></path>
+              </svg>
+            </div>
+          </a>
+        </div>
+        <div class="text-center px-3 pb-6 pt-2">
+          <h3 class="text-gray-800 dark:text-gray-100 font-bold text-lg">{{config?.firstName}} {{config?.lastName}}</h3>
+        </div>
+        <div class="flex justify-center pb-6">
+          <div class="text-center flex flex-col items-center px-2.5">
+            <span class="tooltip text-gray-500 relative group">
+              <svg v-if="config?.isRegularized" class="check w-6 h-6 fill-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+              <svg v-else class="caution w-6 h-6 fill-red-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+              <span class="tooltiptext">{{config?.isRegularized ? 'Done' : 'Not Done'}}</span>
+            </span>
+            <span>Regularization</span>
+          </div>
+          <div class="text-center px-2.5">
+            <div class="text-center flex flex-col items-center px-2.5">
+              <span class="tooltip text-gray-500 relative group">
+                <svg v-if="lastMeeting?.attended" class="check w-6 h-6 fill-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <svg v-else class="caution w-6 h-6 fill-red-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                <span class="tooltiptext">{{lastMeeting?.attended ? 'Present' : 'Absent'}}</span>
+              </span>
+              <span>Last Meeting</span>
+            </div>
+          </div>
+          <div class="text-center px-2.5">
+            <div class="text-center flex flex-col items-center px-2.5">
+              <span class="tooltip text-gray-500 relative group">
+                <svg v-if="lastDue?.paid" class="check w-6 h-6 fill-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <svg v-else class="caution w-6 h-6 fill-red-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                <span class="tooltiptext">{{lastDue?.paid ? 'Current' : 'Not Current'}}</span>
+              </span>
+              <span>Monthly Dues</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-wrap flex-row -mx-4">
+        <div class="flex-shrink max-w-full px-4 w-full lg:w-1/3 mb-8">
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg h-full p-6">
+            <div class="flex flex-row justify-between pb-3">
+              <div class="flex flex-col">
+                <h3 class="text-base font-bold">Information</h3>
+              </div>
+              <div class="relative">
+                <a @click="openEditProfileModal" href="javascript:;" title="edit information" class="text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 transition-colors duration-200 focus:outline-none hover:outline-none">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 h-4 bi bi-pencil-square" viewBox="0 0 16 16">
+                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
+                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <div class="py-3">
+              <div class="text-gray-500 mb-2">
+                My profile information
+                <div v-if="config?.roles.includes('Admin')" class="inline-flex items-center capitalize leading-none text-xs border rounded-full py-1 px-3 bg-blue-500 border-blue-500 text-white">
+                  <span>Admin</span>
                 </div>
-                <div class="flex flex-col justify-center items-start space-y-2 mt-5 w-full">
-                  <div class="top w-full">
-                    <h2 class="font-bold text-xl leading-7 flex justify-between">
-                      <span>{{config?.firstName}} {{config?.lastName}}</span>
-                      <div v-if="config?.roles.includes('Admin')" class="inline-flex items-center capitalize leading-none text-xs border rounded-full py-1 px-3 bg-blue-500 border-blue-500 text-white">
-                        <span>Admin</span>
-                      </div>
-                    </h2>
-                    <ul class="mt-2">
-                      <li class="mb-1 font-normal text-gray-600 text-sm leading-5 flex justify-between items-center">
-                        <span class="flex items-center">
-                          <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd"></path><path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z"></path></svg>
-                          Occupation
-                        </span>
-                        {{config?.occupation ?? 'Add'}}
-                      </li>
-                      <li class="mb-1 font-normal text-gray-600 text-sm leading-5 flex justify-between items-center">
-                        <span class="flex items-center">
-                          <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path></svg>
-                          Location
-                        </span>
-                        {{config?.state ?? 'Add'}} {{config?.state ? config?.country : null}}
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="middle w-full">
-                    <div class="flex-1">
-                      <address class="not-italic font-normal text-sm">
-                        <div class="mt-4">
-                          <div class="header">Email</div>
-                          <span class="content font-medium text-sm">{{config?.email}}</span>
-                        </div>
-                        <div class="mt-4">
-                          <div class="header w-full flex justify-between items-center">
-                            <span>Phone</span>
-                            <span v-if="!config?.phone">Add</span>
-                          </div>
-                          <span class="content font-medium text-sm">{{config?.phone}}</span>
-                        </div>
-                        <div class="mt-4">
-                          <div class="header w-full flex justify-between items-center">
-                            <span>Marital Status</span>
-                            <span v-if="!config?.maritalStatus">Add</span>
-                          </div>
-                          <span class="content font-medium text-sm">{{config?.maritalStatus}}</span>
-                        </div>
-                        <div class="mt-4">
-                          <div class="header w-full flex justify-between items-center">
-                            <span>Chapter</span>
-                            <span v-if="!config?.chapter">Add</span>
-                          </div>
-                          <span class="content font-medium text-sm">{{config?.chapter}}</span>
-                        </div>
-                        <div class="mt-4">
-                          <div class="header w-full flex justify-between items-center">
-                            <span>Choir Part</span>
-                            <span v-if="!config?.choirPart">Add</span>
-                          </div>
-                          <span class="content font-medium text-sm">{{config?.choirPart}}</span>
-                        </div>
-                        <div class="mt-4">
-                          <div class="header w-full flex justify-between items-center">
-                            <span>Campus</span>
-                            <span v-if="!config?.campus">Add</span>
-                          </div>
-                          <span class="content font-medium text-sm">{{config?.campus}}</span>
-                        </div>
-                        <div class="mt-4">
-                          <div class="header w-full flex justify-between items-center">
-                            <span>Church</span>
-                            <span v-if="!config?.church?.churchName">Add</span>
-                          </div>
-                          <span v-if="config?.church?.churchName" class="content font-medium text-sm">{{config?.church?.churchName}}</span>
-                          <span v-if="config?.church?.denomination" class="content font-medium text-sm">{{config?.church?.denomination}} Church</span>
-                          <div class="content font-medium text-sm">{{config?.church?.state}}</div>
-                          <div class="content font-medium text-sm">{{config?.church?.country}}</div>
-                        </div>
-                      </address>
-                    </div>
-                  </div>
-                </div>
+              </div>
+              <div class="border-t border-gray-200 my-3 dark:border-gray-700"></div>
+              <div class="ltr:text-left rtl:text-right">
+                <p class="mb-2"><strong>Full Name :</strong><span class="ml-2">{{config?.firstName}} {{config?.lastName}}</span></p>
+                <p class="mb-2"><strong>Email :</strong><span class="ml-2">{{config?.email}}</span></p>
+                <p class="mb-2"><strong>Mobile :</strong><span class="ml-2">{{config?.phone ?? 'unset'}}</span></p>
+                <p class="mb-2"><strong>Occupation :</strong><span class="ml-2">{{config?.occupation ?? 'unset'}}</span></p>
+                <p class="mb-2"><strong>Location :</strong><span class="ml-2">{{config?.state ?? 'unset'}} {{config?.state ? config?.country : null}}</span></p>
+              </div>
+              <div class="border-t border-gray-200 my-3 dark:border-gray-700"></div>
+              <div class="ltr:text-left rtl:text-right">
+                <p class="mb-2"><strong>Marital status :</strong><span class="ml-2">{{config?.maritalStatus ?? 'unset'}}</span></p>
+                <p class="mb-2"><strong>Chapter :</strong><span class="ml-2">{{config?.chapter ?? 'unset'}}</span></p>
+                <p class="mb-2"><strong>Campus :</strong><span class="ml-2">{{config?.campus ?? 'unset'}}</span></p>
+                <p class="mb-2"><strong>Choir Part :</strong><span class="ml-2">{{config?.choirPart ?? 'unset'}}</span></p>
+                <p class="mb-2">
+                  <strong>Church :</strong>
+                  <span class="ml-2">{{config?.church?.churchName ?? 'unset'}}</span>
+                  <span class="ml-2">{{config?.church?.denomination}}</span>
+                  <span class="ml-2">{{config?.church?.state}}</span>
+                  <span class="ml-2">{{config?.church?.country}}</span>
+                </p>
               </div>
             </div>
           </div>
-          <div class="card min-w-0 break-words bg-white w-full mb-6 shadow rounded-lg">
-            <div class="px-6 py-4">
-              <h3 class="font-medium text-xl">Dates</h3>
-              <div class="flex-1">
-                <ul class="not-italic font-normal text-sm">
-                  <li class="mt-4">
-                    <div class="header w-full flex justify-between items-center">
-                      <span>Birthday</span>
-                      <span v-if="!config?.birthday">Add</span>
-                    </div>
-                    <span class="content font-medium text-sm">{{config?.birthday}}</span>
-                  </li>
-                  <li class="mt-4">
-                    <div class="header w-full flex justify-between items-center">
-                      <span>Graduation</span>
-                      <span v-if="!config?.graduatedAt">Add</span>
-                    </div>
-                    <span class="content font-medium text-sm">{{config?.graduatedAt}}</span>
-                  </li>
-                  <li class="mt-4">
-                    <div class="header w-full flex justify-between items-center">
-                      <span>Regularization</span>
-                      <span v-if="!config?.RegularizedAt" class="text-red-400">Admin action</span>
-                    </div>
-                    <span class="content font-medium text-sm">{{config?.RegularizedAt}}</span>
-                  </li>
-                </ul>
+        </div>
+        <div class="flex-shrink max-w-full px-4 w-full lg:w-1/3 mb-8">
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            <div class="flex flex-row justify-between pb-3">
+              <div class="flex flex-col">
+                <h3 class="text-base font-bold">Dates</h3>
+              </div>
+              <div class="relative">
+                <a @click="openEditProfileModal" href="javascript:;" title="edit information" class="text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 transition-colors duration-200 focus:outline-none hover:outline-none">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 h-4 bi bi-pencil-square" viewBox="0 0 16 16">
+                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
+                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"></path>
+                  </svg>
+                </a>
               </div>
             </div>
-          </div>
-          <div class="card min-w-0 break-words bg-white w-full mb-6 shadow rounded-lg">
-            <div class="px-6 py-4">
-              <h3 class="f font-medium text-xl">MCC Status</h3>
-              <ul class="flex mt-4 flex-wrap space-y-2 space-r-2">
-                <li class="text-sm flex justify-start items-stretch">
-                  <label class="rounded-l py-1 px-3 bg-gray-200">Regularization</label>
-                  <div class="content rounded-r px-3 py-1 text-white" :class="[config?.isRegularized ? 'bg-green-400' : 'bg-red-400']">{{config?.isRegularized ? 'Done' : 'Not Done'}}</div>
-                </li>
-                <li class="text-sm flex justify-start items-stretch">
-                  <label class="rounded-l py-1 px-3 bg-gray-200">Last Meeting</label>
-                  <div class="content rounded-r px-3 py-1 text-white" :class="[config?.attendedLastMeeting ? 'bg-green-400' : 'bg-red-400']">{{config?.attendedLastMeeting ? 'Present' : 'Absent'}}</div>
-                </li>
-                <li class="text-sm flex justify-start items-stretch">
-                  <label class="rounded-l py-1 px-3 bg-gray-200">Dues</label>
-                  <div class="content rounded-r px-3 py-1 text-white" :class="[config?.isCurrentOnDues ? 'bg-green-400' : 'bg-red-400']">{{config?.isCurrentOnDues ? 'Current' : 'Not Current'}}</div>
-                </li>
-              </ul>
+            <div class="py-3">
+              <div class="ltr:text-left trl:text-right">
+                <p class="mb-2"><strong>Birthday: </strong><span class="ml-2">{{config?.birthday ?? 'unset'}}</span></p>
+                <p class="mb-2"><strong>Graduation: </strong><span class="ml-2">{{config?.graduatedAt ?? 'unset'}}</span></p>
+                <p class="mb-2">
+                  <strong>Regularization: </strong>
+                  <span class="ml-2">{{config?.RegularizedAt}}</span>
+                  <span v-if="!config?.regularizedAt" class="ml-2">Admin action</span>
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
+    <EditProfileModal v-if="isEditProfileModalRevealed" :user="config" @closeModal="closeEditProfileModal" />
+  </div>
 </template>
 
 <script setup>
+import EditProfileModal from '@/components/Modals/EditProfileModal.vue'
 import { computed } from "@vue/runtime-core";
-import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import useUpdateDocument from '@/composables/useUpdateDocument';
+import { useConfirmDialog } from '@vueuse/core';
 
 const store = useStore();
-const router = useRouter();
 
-// composables
-const { isPending: updating, error: updatingError, updateDocument } = useUpdateDocument();
+const { isRevealed: isEditProfileModalRevealed, reveal: openEditProfileModal, cancel: closeEditProfileModal } = useConfirmDialog();
 
 const config = computed(() => {
   return store.getters?.formattedConfig;
 });
+const lastMeeting = computed(() => {
+  let config =  store?.getters?.formattedConfig;
+  return config?.meetings[config?.meetings.length - 1];
+})
+const lastDue = computed(() => {
+  let config =  store?.getters?.formattedConfig;
+  return config?.dues[config?.dues.length - 1];
+})
 
-const submitUpdate = async (formData) => {
-  await updateDocument('/profile/update', formData)
-  if(!updatingError.value){
-    router.go();
-  }
-}
+
 </script>
 
-<style></style>
+<style>
+  .tooltiptext{
+    @apply  hidden group-hover:inline-block bg-gray-800 text-white text-center px-2 py-1 rounded-sm absolute w-32 top-[100%] left-[50%] -ml-[calc(128px/2)] z-[1];
+  }
+  .tooltiptext::after{
+    @apply content-[""] absolute bottom-[100%] left-[50%] -mt-1 border-4 border-solid border-t-transparent border-r-transparent border-b-gray-800 border-l-transparent;
+  }
+</style>

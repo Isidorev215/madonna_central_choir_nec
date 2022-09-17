@@ -1,5 +1,6 @@
 <template>
-  <div class="avatar-initials imaged flex justify-center items-center" :class="{rounded: dimension == 100}" ref="avatar" :style="{
+  <img v-if="image" :src="image" />
+  <div v-else class="avatar-initials imaged flex justify-center items-center" :class="{rounded: dimension == 100}" ref="avatar" :style="{
     backgroundColor: colors[colorIndex],
     width: width,
     height: height,
@@ -16,6 +17,7 @@
 <script>
 export default {
   props: {
+    image: { default: null },
     name: {type: String, required: true},
     rounded: {type: Number, default: 10},
     dimension: Number,

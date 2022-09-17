@@ -107,6 +107,6 @@ export default {
   @apply bg-mcc-blue text-white px-2 py-1;
 }
 .pag-btn{
-  @apply flex items-center justify-center space-x-3 border border-gray-400 rounded-md bg-white py-2 px-3 text-mcc-dark-blue disabled:text-gray-300;
+  @apply flex items-center justify-center space-x-3 border border-gray-400 rounded bg-white text-sm md:text-base px-1 py-2 md:py-2 md:px-3 text-mcc-dark-blue disabled:text-gray-300;
 }
 </style>

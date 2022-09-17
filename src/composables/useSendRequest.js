@@ -2,7 +2,7 @@ import axios from 'axios';
 import { ref } from 'vue';
 import { useToast } from 'vue-toastification';
 
-export default function useUpdateDocument() {
+export default function useSendRequest() {
   const toast = useToast();
   const data = ref(null);
   const error = ref(null);
@@ -15,10 +15,35 @@ export default function useUpdateDocument() {
 
     try {
      let res = await axios.put(url, payload)
+     data.value = res.data;
      error.value = null;
      isPending.value = false;
      toast.success(res.data.data.message)
+      
+     return res;
+    //  return the res if it is needed
+    }catch (err){
+      error.value = err;
+      isPending.value = false;
+      toast.error(`${err.response.data.data.error}`);
+      if(err.response.data.data.details.length > 0){
+        toast.error(`${err.response.data.data.details[0]}`);
+      }
+    }
+  }
 
+  const addDocument = async (url, payload) => {
+    isPending.value = true;
+    data.value = null;
+    error.value = null;
+
+    try {
+     let res = await axios.post(url, payload)
+     data.value = res.data;
+     error.value = null;
+     isPending.value = false;
+     toast.success(res.data.data.message)
+      
      return res;
     //  return the res if it is needed
     }catch (err){
@@ -35,6 +60,7 @@ export default function useUpdateDocument() {
     data,
     error,
     isPending,
-    updateDocument
+    updateDocument,
+    addDocument,
   }
 }
