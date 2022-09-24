@@ -113,6 +113,68 @@
           </div>
         </div>
         <div class="flex-shrink max-w-full px-4 w-full lg:w-1/3 mb-8">
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg h-full p-6">
+            <div class="flex flex-row justify-between pb-6">
+              <div class="flex flex-col">
+                <h3 class="text-base font-bold">Recent Meetings</h3>
+              </div>
+            </div>
+            <div class="relative">
+              <ol class="h-96 overflow-y-auto scrollbars show mb-6">
+                <li v-for="meeting in config.meetings" :key="meeting._id" class="flex">
+                  <div class="relative flex-shrink-0 w-12 text-center">
+                    <span class="absolute left-1/2 -ml-1 top-10 -bottom-4 border-l-2 border-dashed border-gray-200 dark:border-gray-700"></span>
+                    <div class="mr-auto">
+                      <img src="@/assets/img/meeting-icon.png" class="h-10 w-10 p-1 rounded-full bg-blue-200">
+                    </div>
+                  </div>
+
+                  <div class="ml-2 mb-4">
+                     <h3 class="mb-1 w-full flex justify-between items-center text-base font-semibold text-gray-900 dark:text-white">
+                  <span>{{meeting.details?.epoch ? 'Start' : meeting.details?.venue}}</span>
+                  <span v-if="meeting.attended" class="bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">Present</span>
+                  <span v-else class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">Absent</span>
+                </h3>
+                <time class="block mb-2 text-xs italic font-normal leading-none text-gray-400 dark:text-gray-500">{{ meeting.details?.epoch ? '----' : moment(meeting.details?.scheduledDate).format('MMMM Do YYYY') }}</time>
+                <p class="text-base font-normal text-gray-500 dark:text-gray-400">{{meeting.details?.desc ?? '----'}}</p>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="flex-shrink max-w-full px-4 w-full lg:w-1/3 mb-8">
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg h-full p-6">
+            <div class="flex flex-row justify-between pb-6">
+              <div class="flex flex-col">
+                <h3 class="text-base font-bold">Recent Dues</h3>
+              </div>
+            </div>
+            <div class="relative">
+              <ol class="h-96 overflow-y-auto scrollbars show mb-6">
+                <li v-for="due in config.dues" :key="due._id" class="flex">
+                  <div class="relative flex-shrink-0 w-12 text-center">
+                    <span class="absolute left-1/2 -ml-1 top-10 -bottom-4 border-l-2 border-dashed border-gray-200 dark:border-gray-700"></span>
+                    <div class="mr-auto">
+                      <img src="@/assets/img/monthly-dues-icon.png" class="h-10 w-10 p-1 rounded-full bg-blue-200">
+                    </div>
+                  </div>
+
+                  <div class="ml-2 mb-4">
+                     <h3 class="mb-1 w-full flex justify-between items-center text-base font-semibold text-gray-900 dark:text-white">
+                  <span>{{due.details?.epoch ? 'Start' : due.details?.amount}}</span>
+                  <span v-if="due.paid" class="bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">Paid</span>
+                  <span v-else class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">Unpaid</span>
+                </h3>
+                <time class="block mb-2 text-xs italic font-normal leading-none text-gray-400 dark:text-gray-500">{{ due.details?.epoch ? '----' : moment(due.details?.duesDateFor).format('MMMM Do YYYY') }}</time>
+                <p class="text-base font-normal text-gray-500 dark:text-gray-400">{{due.details?.desc ?? '----'}}</p>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="flex-shrink max-w-full px-4 w-full lg:w-1/3 mb-8">
           <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
             <div class="flex flex-row justify-between pb-3">
               <div class="flex flex-col">
@@ -147,6 +209,7 @@
 </template>
 
 <script setup>
+import moment from 'moment';
 import EditProfileModal from '@/components/Modals/EditProfileModal.vue'
 import { computed } from "@vue/runtime-core";
 import { useStore } from "vuex";

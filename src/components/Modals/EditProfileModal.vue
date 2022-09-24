@@ -15,7 +15,7 @@
         <!-- modal title -->
         <div class="w-full flex justify-between itsm-center px-6 py-3 text-xl border-b dark:border-gray-800 font-bold">
           <span>Edit profile</span>
-          <button @click="$emit('closeModal')" class="fill-current h-6 w-6 font-3xl font-bold">×</button>
+          <button type="button" @click="$emit('closeModal')" class="fill-current h-6 w-6 font-3xl font-bold">×</button>
         </div>
 
         <!-- modal content -->
