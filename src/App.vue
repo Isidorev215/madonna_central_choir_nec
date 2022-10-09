@@ -10,15 +10,14 @@
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
 import { useStore } from 'vuex';
-import { useToast } from 'vue-toastification';
+import useToastForApi from '@/composables/useToastForApi'
 
 const store = useStore();
 const configPending = ref(false);
-const toast = useToast();
 
 onMounted(() => {
   configPending.value = true;
-  axios.get('config')
+  axios.get('/config')
   .then(res => {
     configPending.value = false;
     store.commit('updateConfig', res.data.data)
@@ -26,7 +25,7 @@ onMounted(() => {
   .catch(err => {
     configPending.value = false;
     store.commit('updateConfig', null);
-    toast.error(`${err?.response?.data?.data?.error}`);
+    useToastForApi(err, 'error');
   })
 })
 </script>
@@ -34,6 +33,13 @@ onMounted(() => {
 <style lang="scss">
 #app {
   @apply font-inter;
+}
+
+.success{
+  @apply text-green-700 bg-green-200
+}
+.failure{
+  @apply text-red-700 bg-red-200
 }
 
 .skeleton{
@@ -49,6 +55,7 @@ onMounted(() => {
     background-color: hsl(200, 20%, 05%);
   }
 }
+
 // #app {
 //   font-family: Avenir, Helvetica, Arial, sans-serif;
 //   -webkit-font-smoothing: antialiased;

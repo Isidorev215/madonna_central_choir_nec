@@ -60,7 +60,7 @@ export default {
       }
       // When on the last page
       if (this.currentPage === this.totalPages) {
-        return Math.abs(this.totalPages - this.maxVisibleButtons);
+        return Math.abs((this.totalPages - this.maxVisibleButtons) + 1);
       }
       // When inbetween
       return this.currentPage - 1;

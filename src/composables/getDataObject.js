@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ref } from "vue";
+import useToastForApi from './useToastForApi';
 
 const getDataObject = (url) => {
   const data = ref(null);
@@ -20,6 +21,7 @@ const getDataObject = (url) => {
     }catch(err) {
       error.value = err;
       isPending.value = false;
+      useToastForApi(err, 'error');
     }
   }
 

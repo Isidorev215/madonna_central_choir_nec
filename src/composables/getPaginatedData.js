@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ref, unref } from "vue";
+import useToastForApi from './useToastForApi';
 
 const getPaginatedData = (url, page) => {
   const paginated_res = ref(null);
@@ -21,6 +22,7 @@ const getPaginatedData = (url, page) => {
     }catch(err) {
       error.value = err;
       isPending.value = false;
+      useToastForApi(err, 'error');
     }
   }
 

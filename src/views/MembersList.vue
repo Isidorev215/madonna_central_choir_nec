@@ -213,7 +213,7 @@ const onPageChange = async (page) => {
 onMounted(async() => {
   await getUsers();
   if(getUsersError.value){
-    toast.error(`${err.response.data.data.error}`);
+    // do something later on. Toast is inside the composable
   }
 })
 </script>

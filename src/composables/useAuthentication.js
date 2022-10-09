@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ref } from "vue";
-import { useToast } from "vue-toastification";
+import useToastForApi from './useToastForApi';
 
 
 export default function useAuthentication(){
@@ -8,7 +8,6 @@ export default function useAuthentication(){
   const isPending = ref(false);
 
   const login = async (payload) => {
-    const toast = useToast();
 
     isPending.value = true;
     error.value = null;
@@ -16,21 +15,17 @@ export default function useAuthentication(){
       const res = await axios.post('login', payload)
       isPending.value = false;
       error.value = null;
-      toast.success(res.data.data.message)
+      useToastForApi(res, 'success');
   
       return res;
     }catch(err){
       isPending.value = false;
       error.value = err;
-      toast.error(`${err.response.data.data.error}`);
-      if(err.response.data.data.details.length > 0){
-        toast.error(`${err.response.data.data.details[0]}`);
-      }
+      useToastForApi(err, 'error');
     }
   }
 
   const register = async (payload) => {
-    const toast = useToast();
 
     isPending.value = true;
     error.value = null;
@@ -38,16 +33,13 @@ export default function useAuthentication(){
       const res = await axios.post('register', payload)
       isPending.value = false;
       error.value = null;
-      toast.success(res.data.data.message)
+      useToastForApi(res, 'success');
 
       return res;
     }catch(err){
       isPending.value = false;
       error.value = err;
-      toast.error(`${err.response.data.data.error}`);
-      if(err.response.data.data.details.length > 0){
-        toast.error(`${err.response.data.data.details[0]}`);
-      }
+      useToastForApi(err, 'error');
     }
   }
 

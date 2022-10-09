@@ -1,9 +1,8 @@
 import axios from 'axios';
 import { ref } from 'vue';
-import { useToast } from 'vue-toastification';
+import useToastForApi from './useToastForApi';
 
 export default function useSendRequest() {
-  const toast = useToast();
   const data = ref(null);
   const error = ref(null);
   const isPending = ref(false);
@@ -18,17 +17,14 @@ export default function useSendRequest() {
      data.value = res.data;
      error.value = null;
      isPending.value = false;
-     toast.success(res.data.data.message)
+     useToastForApi(res, 'success');
       
      return res;
     //  return the res if it is needed
     }catch (err){
       error.value = err;
       isPending.value = false;
-      toast.error(`${err.response.data.data.error}`);
-      if(err.response.data.data.details.length > 0){
-        toast.error(`${err.response.data.data.details[0]}`);
-      }
+      useToastForApi(err, 'error');
     }
   }
 
@@ -42,17 +38,14 @@ export default function useSendRequest() {
      data.value = res.data;
      error.value = null;
      isPending.value = false;
-     toast.success(res.data.data.message)
+     useToastForApi(res, 'success');
       
      return res;
     //  return the res if it is needed
     }catch (err){
       error.value = err;
       isPending.value = false;
-      toast.error(`${err.response.data.data.error}`);
-      if(err.response.data.data.details.length > 0){
-        toast.error(`${err.response.data.data.details[0]}`);
-      }
+      useToastForApi(err, 'error');
     }
   }
 
