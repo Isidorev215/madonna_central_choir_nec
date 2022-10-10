@@ -1,7 +1,7 @@
 <template>
   <div class="position-details">
     <section class="custom-divider md:px-4 mb-6 flex items-center justify-between">
-      <button @click="$router.go(-1)" class="flex items-center justify-start">
+      <button type="button" @click="$router.go(-1)" class="flex items-center justify-start">
         <span class="inline-flex justify-center items-center w-8 h-8 rounded-full bg-white text-black dark:bg-slate-900/70 dark:text-white mr-3">
           <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"></path>
@@ -34,7 +34,7 @@
               </div>
             </div>
             <ul v-if="position.holders.length > 0" class="current-holders-list">
-              <li v-for="holder in position.holders" :key="holder._id" class="flex space-y-3 last:mb-6">
+              <li v-for="holder in position.holders" :key="holder._id" class="flex space-y-3 mb-2 last:mb-6">
                 <div class="flex-auto w-[200px] lg:w-[250px] flex justify-start items-center space-x-2">
                   <AvatarInitial :name="`${holder.firstName} ${holder.lastName}`" :dimension="35" :rounded="9999" class="w-14 h-auto align-middle" />
                   <div class="desc flex flex-col justify-center items-start">
@@ -187,7 +187,7 @@
                 <strong class="text-base font-normal">{{ user.firstName }} {{ user.lastName }}</strong>
               </div>
             </div>
-            <button @click="removeUser(user._id)" class="flex-auto x">
+            <button type="button" @click="removeUser(user._id)" class="flex-auto x">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
           </li>
@@ -225,7 +225,15 @@ const { isPending: updating, error: updatingError, updateDocument } = useSendReq
 
 // computed
 const filteredUsers = computed(() => {
-  return users.value.filter((user) => {
+  let leanUsers = users.value.map(user => { 
+    return { 
+      _id: user._id, 
+      firstName: user.firstName, 
+      lastName: user.lastName, 
+      profileImage: user.profileImage 
+    } 
+  })
+  return leanUsers.filter((user) => {
     let fullName = `${user.firstName} ${user.lastName}`;
     return fullName.toLowerCase().includes(searchTerm.value.toLowerCase());
   });
@@ -292,7 +300,7 @@ const onPageChange = async (page) => {
     primeCheckBox.value.checked = false;
   }
 
-  // make sure the selected remains selected for each page
+  // make sure the selected remains selected and checked for each page
   selectedUsers.value.forEach(selectedUser => {
     filteredUsers.value.forEach(user => {
       if(selectedUser._id === user._id){
@@ -328,8 +336,9 @@ const removeDutyInput = (index) => {
 }
 
 const editPosition = async (position_id) => {
-  let selectedUsersIds = selectedUsers.value.map(user => user._id)
-  let formOutput = { ...updatePositionFormData.value, holders: selectedUsersIds }
+  // convert array to set
+  let selectedUsersIds = new Set(selectedUsers.value.map(user => user._id))
+  let formOutput = { ...updatePositionFormData.value, holders: [...selectedUsersIds] }
   console.log(formOutput)
   
   await updateDocument(`/edit-position/${route.params.id}`, formOutput);
@@ -340,8 +349,9 @@ const editPosition = async (position_id) => {
 
 onMounted(async () => {
   await getUsers();
-  if (getUsersError.value) {
-    // do something later on. Toast is ini the composable
+  if (!getUsersError.value) {
+    // check to make sure the holders are auto selected
+    selectedUsers.value = [...position.value.holders]
   }
 });
 </script>
