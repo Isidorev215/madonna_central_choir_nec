@@ -51,13 +51,14 @@
               type="number"
               name="allowedHolders"
               label="Allowed Holders"
-              help="Add the number of holders allowed for the position"
-              min="1"
+              help="Add the number of holders allowed for the position, Zero(0) represents no limit"
+              help_2=""
+              min="0"
               step="1"
               outer-class="mb-2"
               wrapper-class="$reset w-2/3 flex flex-col justify-start"
               label-class="$reset block mb-1 font-medium text-base"
-              validation="required|min:1"
+              validation="required|min:0"
               validation-visibility="blur"
             />
 

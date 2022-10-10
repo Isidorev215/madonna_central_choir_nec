@@ -30,10 +30,10 @@
               <h2 class="text-lg font-semibold">Holders</h2>
               <div class="text-xs md:text-sm flex justify-start items-stretch">
                 <span class="rounded-l py-1 px-3 bg-gray-200">Maximum no. of Holders</span>
-                <span class="content rounded-r px-3 py-1 text-white bg-green-400">{{ position.allowedHolders }}</span>
+                <span class="content rounded-r px-3 py-1 text-white bg-green-400">{{ position.allowedHolders > 0 ? position.allowedHolders : 'Non'  }}</span>
               </div>
             </div>
-            <ul v-if="position.holders > 0" class="current-holders-list">
+            <ul v-if="position.holders.length > 0" class="current-holders-list">
               <li v-for="holder in position.holders" :key="holder._id" class="flex space-y-3 last:mb-6">
                 <div class="flex-auto w-[200px] lg:w-[250px] flex justify-start items-center space-x-2">
                   <AvatarInitial :name="`${holder.firstName} ${holder.lastName}`" :dimension="35" :rounded="9999" class="w-14 h-auto align-middle" />
@@ -133,17 +133,17 @@
 
             <FormKit 
               v-if="toggleAllowedHolders"
-              :value="isNaN(Number(position.allowedHolders)) ? '' : position.allowedHolders"
+              :value="isNaN(Number(position.allowedHolders)) ? '0' : position.allowedHolders"
               type="number"
               name="allowedHolders"
               label="Allowed Holders"
-              help="Add the number of holders allowed for the position"
-              min="1"
+              help="Add the number of holders allowed for the position, Zero (0) represents no limit"
+              min="0"
               step="1"
               outer-class="mb-2"
               wrapper-class="$reset w-2/3 flex flex-col justify-start"
               label-class="$reset block mb-1 font-medium text-base"
-              validation="required|min:1"
+              validation="required|min:0"
               validation-visibility="blur"
             />
 
@@ -330,6 +330,7 @@ const removeDutyInput = (index) => {
 const editPosition = async (position_id) => {
   let selectedUsersIds = selectedUsers.value.map(user => user._id)
   let formOutput = { ...updatePositionFormData.value, holders: selectedUsersIds }
+  console.log(formOutput)
   
   await updateDocument(`/edit-position/${route.params.id}`, formOutput);
   if(!updatingError.value){
