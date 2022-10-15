@@ -9,9 +9,11 @@ const useToastForApi = (result, type) => {
     toast.success(payload.data.data.message)
   }
   else if(type === 'error'){
-    toast.error(`${payload.response.data.data.error}`);
-    if(payload.response.data.data.details.length > 0){
-      toast.error(`${payload.response.data.data.details[0]}`);
+    if(payload.response.data){
+      toast.error(`${payload.response.data.data.error}`);
+      if(payload.response.data.data.details.length > 0){
+        toast.error(`${payload.response.data.data.details[0]}`);
+      }
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="single-user-wrapper">
     
-    <section class="custom-divider px-4 mb-6 flex items-center justify-between">
+    <section class="custom-divider mb-6 flex items-center justify-between">
       <button @click="$router.go(-1)" class="flex items-center justify-start">
         <span class="inline-flex justify-center items-center w-8 h-8 rounded-full bg-white text-black dark:bg-slate-900/70 dark:text-white mr-3">
           <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">

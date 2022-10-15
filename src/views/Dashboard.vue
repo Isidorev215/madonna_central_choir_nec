@@ -107,16 +107,16 @@
                 <thead>
                   <tr>
                     <th class="px-6 bg-gray-50 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Position</th>
-                    <th class="px-6 bg-gray-50 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">No. of Holders</th>
+                    <th class=" bg-gray-50 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">No. of Holders</th>
                     <th class="px-6 bg-gray-50 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left min-w-140-px"></th>
                   </tr>
                 </thead>
                 <tbody v-if="config?.positions.length > 0">
                   <tr v-for="position in config.positions" :key="position">
                     <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left capitalize">{{position.name}}</th>
-                    <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{ position.holders.length > 0 ? position.holders.length : 'Empty' }}</td>
+                    <td class="border-t-0  align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{ position.holders.length > 0 ? position.holders.length : 'Empty' }}</td>
                     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      <div class="flex items-center">
+                      <div class="flex items-center justify-end">
                         <router-link :to="{ name: 'PositionDetails', params: { id: position._id} }" class="bg-indigo-500 text-white text-xs px-3 py-1 rounded-sm">more</router-link>
                       </div>
                     </td>
