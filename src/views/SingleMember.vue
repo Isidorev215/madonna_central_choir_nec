@@ -41,6 +41,10 @@
                   <div class="header">Email</div>
                   <span class="content font-medium text-sm">{{ user?.email }}</span>
                 </div>
+                <div class="mt-4">
+                  <div class="header">Position</div>
+                  <span class="content font-medium text-sm capitalize">{{ user?.membersPosition }}</span>
+                </div>
 
                 <div v-show="user?.phone" class="mt-4">
                   <div class="header w-full flex justify-between items-center">
@@ -126,7 +130,7 @@
                 {{user?.isregularized ? `Approved on: ${moment(user?.regularizedAt).format('ll')}` : 'Awaiting Regularization' }}
               </span>
             </div>
-            <button class="w-full text-center py-2 text-white rounded disabled:opacity-30" :disabled="user?.isregularized" :class="[user?.isregularized ? 'bg-green-500': 'bg-blue-500']">{{user?.isregularized ? 'Regularized' : 'Regularize'}}</button>
+            <button class="w-full text-center py-2 text-white rounded disabled:opacity-30" :disabled="user?.isRegularized" :class="[user?.isRegularized ? 'bg-green-500': 'bg-blue-500']">{{user?.isRegularized ? 'Regularized' : 'Regularize'}}</button>
           </div>                
         </div>
       </div>
