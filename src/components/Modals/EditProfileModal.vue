@@ -24,7 +24,7 @@
             <div class="flex-shrink max-w-full px-4 w-full">
               <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden pb-8">
                 <div class="h-40 overflow-hidden relative">
-                  <img :src="user?.coverImage ? user?.coverImage : require(`@/assets/img/default_profile_cover.jpg`)" class="w-full" />
+                  <img :src="user?.coverImage ? user?.coverImage : defaultImg" class="w-full" />
                 </div>
                 <div class="flex justify-center -mt-10 relative">
                   <AvatarInitial :image="user.profileImage" :name="`${user.firstName} ${user.lastName}`" :dimension="96" :rounded="9999" class="rounded-full w-24 h-24 bg-gray-200 border-solid border-white border-2 -mt-3" />
@@ -211,6 +211,16 @@
               />
               <FormKit 
                 type="text"
+                label="City/Town/Village (Church)"
+                name="city"
+                :value="user?.church?.city"
+                outer-class="$reset form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-2"
+                wrapper-class="$reset w-full flex flex-col justify-start"
+                label-class="$reset block mb-1 text-base capitalize"
+                validation-visibility="blur"
+              />
+              <FormKit 
+                type="text"
                 label="State (Church)"
                 name="state"
                 :value="user?.church?.state"
@@ -273,6 +283,9 @@
 <script setup>
 import useSendRequest from "@/composables/useSendRequest";
 import { useRouter } from "vue-router";
+
+// statics
+import defaultImg from '@/assets/img/default_profile_cover.jpg'
 
 const router = useRouter();
 const emit = defineEmits(["closeModal"]);

@@ -143,7 +143,7 @@
               </FormKit>
             </FormKit>
           </div>
-          <button type="submit" class="w-full p-3 bg-mcc-blue text-white font-medium flex md:hidden justify-center items-center rounded-md">Submit</button>
+          <button type="submit" class="w-full p-3 bg-mcc-blue text-white font-medium flex justify-center items-center rounded-md">Submit</button>
         </div>
       </div>
       
@@ -161,12 +161,12 @@ import getPaginatedData from "@/composables/getPaginatedData";
 import useSendRequest from '@/composables/useSendRequest';
 import { computed, ref } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
-import { useStore } from "vuex";
+import { useConfigStore } from '../stores/configStore';
 import { useConfirmDialog } from '@vueuse/core'
 
 const route = useRoute();
 const router = useRouter();
-const store = useStore();
+const configStore = useConfigStore();
 
 const openToEditPosition = ref(false);
 const toggleAllowedHolders = ref(false);
@@ -177,7 +177,7 @@ const { isPending: updating, error: updatingError, updateDocument } = useSendReq
 const { reveal: openAddUsersModal, isRevealed: isAddUsersModalOpen, cancel: closeAddUsersModal } = useConfirmDialog();
 
 const position = computed(() => {
-  return store.getters.formattedConfig?.positions.find((position) => position._id === route.params.id);
+  return configStore.formattedConfig?.positions.find((position) => position._id === route.params.id);
 });
 
 // handling duties

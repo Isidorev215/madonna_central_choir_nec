@@ -144,11 +144,11 @@ import { useToggle } from '@vueuse/core'
 import { computed, onMounted, reactive, ref } from "vue";
 import { useToast } from 'vue-toastification';
 import { useClickOutside } from '@/composables/useClickOutside';
-import { useStore } from 'vuex';
+import { useConfigStore } from '../stores/configStore';
 import moment from 'moment';
 
 const toast = useToast();
-const store = useStore();
+const configStore = useConfigStore();
 
 const currentPage = ref(1);
 const positionsDropRoot = ref(null);
@@ -201,7 +201,7 @@ const filteredUsers = computed(() => {
   return result;
 })
 const positions = computed(() => {
-  return store.getters?.formattedConfig?.positions;
+  return configStore?.formattedConfig?.positions;
 });
 
 

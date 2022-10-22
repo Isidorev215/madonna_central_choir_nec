@@ -140,11 +140,11 @@
 import CreatePositionModal from "@/components/Modals/CreatePositionModal.vue";
 import { computed, ref } from "@vue/runtime-core";
 import { useConfirmDialog } from "@vueuse/core";
-import { useStore } from "vuex";
+import { useConfigStore } from '../stores/configStore';
   
-  const store = useStore();
+  const configStore = useConfigStore();
   const config = computed(() => {
-    return store.getters?.formattedConfig;
+    return configStore?.formattedConfig;
   });
 
   const { isRevealed: isPositionModalRevealed, reveal: openPositionModal, cancel: closePositionModal } = useConfirmDialog();

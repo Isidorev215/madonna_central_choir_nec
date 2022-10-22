@@ -1,39 +1,23 @@
 <template>
-  <router-view name="nav" />
   <router-view name="auth" />
-  <router-view class="default-route min-h-[calc(100vh-4rem)] mt-16 lg:ml-56 p-4" />
-  <router-view name="footer" class="lg:ml-56"/>
-  <Spinner v-if="configPending"/>
+  <router-view v-if="configStore.config" name="nav" />
+  <router-view v-if="configStore.config" class="default-route min-h-[calc(100vh-4rem)] mt-16 lg:ml-56 p-4" />
+  <router-view v-if="configStore.config" name="footer" class="lg:ml-56"/>
+  <Spinner v-if="configStore.isPending"/>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
-import axios from 'axios';
-import { useStore } from 'vuex';
-import useToastForApi from '@/composables/useToastForApi'
+import { useConfigStore } from './stores/configStore';
 
-const store = useStore();
-const configPending = ref(false);
+const configStore = useConfigStore();
+configStore.updateConfig()
 
-onMounted(() => {
-  configPending.value = true;
-  axios.get('/config')
-  .then(res => {
-    configPending.value = false;
-    store.commit('updateConfig', res.data.data)
-  })
-  .catch(err => {
-    configPending.value = false;
-    store.commit('updateConfig', null);
-    useToastForApi(err, 'error');
-  })
-})
 </script>
 
 <style lang="scss">
 #app {
   @apply font-inter;
-}
+} 
 
 .success{
   @apply text-green-700 bg-green-200

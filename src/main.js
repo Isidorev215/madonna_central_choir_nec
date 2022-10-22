@@ -1,9 +1,9 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
-import store from './store'
 
-import '@/assets/css/index.css'
+import './assets/css/index.css'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import { plugin, defaultConfig, createInput } from '@formkit/vue'
@@ -19,13 +19,14 @@ import NoFixedSpinner from './components/NoFixedSpinner.vue'
 import Pagination from '@/components/Pagination.vue'
 import AvatarInitial from '@/components/AvatarInitial.vue'
 
+
 const app = createApp(App) 
 
 app.config.globalProperties.$appUrl = window.location.origin;
-app.config.globalProperties.$serverUrl = process.env.VUE_APP_BASE_URL;
+app.config.globalProperties.$serverUrl = import.meta.env.VITE_BASE_URL;
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = process.env.VUE_APP_BASE_URL + "api/v1";
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL + "api/v1";
 let token = localStorage.getItem("token");
 axios.defaults.headers.common = {
   // "Access-Control-Allow-Credentials": true
@@ -41,7 +42,7 @@ app.component('Pagination', Pagination)
 app.component('AvatarInitial', AvatarInitial)
 
 app.use(Toast, { position: 'top-right' })
-app.use(store)
+app.use(createPinia())
 app.use(router)
 app.use(VueAxios, axios)
 app.use(plugin, defaultConfig({
@@ -52,4 +53,5 @@ app.use(plugin, defaultConfig({
     })
   }
 }))
+
 app.mount('#app')

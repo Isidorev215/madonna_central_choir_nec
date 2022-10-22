@@ -77,11 +77,11 @@ import { reactive, ref } from '@vue/reactivity'
 import { useRoute, useRouter } from 'vue-router'
 import { computed, watch } from '@vue/runtime-core'
 import { useDark, useToggle } from '@vueuse/core'
-import { useStore } from 'vuex'
+import { useConfigStore } from '../stores/configStore'
 import useMenu from '@/composables/useMenu';
   const route = useRoute();
   const router = useRouter();
-  const store = useStore();
+  const configStore = useConfigStore();
 
   // refs for primitives
   const profileRoot = ref(null);
@@ -101,7 +101,7 @@ import useMenu from '@/composables/useMenu';
 
   // computed
   const config = computed(() => {
-    return store.state.config;
+    return configStore.config;
   })
 
   // Composables

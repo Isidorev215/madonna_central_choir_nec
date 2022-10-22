@@ -6,7 +6,7 @@
     <div class="flex-shrink max-w-full px-4 w-full mb-6">
       <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md mb-8">
         <div class="group h-40 overflow-hidden relative">
-          <img :src="config?.coverImage ? config?.coverImage : require(`@/assets/img/default_profile_cover.jpg`)" class="w-full" />
+          <img :src="config?.coverImage ? config?.coverImage : defaultImg" class="w-full" />
           <div class="absolute top-4 right-2">
             <button @click="openEditProfileModal" type="button" class="group-hover:opacity-80 opacity-0 py-1.5 px-3 inline-block text-center mb-3 rounded leading-5 text-gray-800 bg-gray-200 border border-gray-200 hover:text-gray-900 hover:bg-gray-300 hover:ring-0 hover:border-gray-300 focus:bg-gray-300 focus:border-gray-300 focus:outline-none focus:ring-0">
               Edit cover
@@ -98,13 +98,13 @@
                   <strong>Choir Part :</strong>
                   <span class="ml-2">{{ config?.choirPart ?? "unset" }}</span>
                 </p>
-                <p class="mb-2">
+                <div class="mb-2">
                   <strong>Church :</strong>
                   <span class="ml-2">{{ config?.church?.churchName ?? "unset" }}</span>
-                  <span class="ml-2">{{ config?.church?.denomination }}</span>
-                  <span class="ml-2">{{ config?.church?.state }}</span>
-                  <span class="ml-2">{{ config?.church?.country }}</span>
-                </p>
+                  <p class="">{{ config?.church?.denomination ? `${config?.church.denomination}, Church`: '' }}</p>
+                  <p class="">{{ config?.church?.city ? `${config?.church?.city},` : '' }} {{ config?.church?.state }}.</p>
+                  <p class="">{{ config?.church?.country }}.</p>
+                </div>
               </div>
             </div>
           </div>
@@ -199,7 +199,7 @@
                 <p class="mb-2">
                   <strong>Regularization: </strong>
                   <span class="ml-2">{{ config?.RegularizedAt }}</span>
-                  <span v-if="!config?.regularizedAt" class="ml-2 text-red-500">Admin action</span>
+                  <span v-if="!config?.regularizedAt" class="ml-2 text-red-500">Faulting</span>
                 </p>
               </div>
             </div>
@@ -215,15 +215,18 @@
 import ProfilePageStatus from "@/components/ProfilePageStatus.vue";
 import EditProfileModal from "@/components/Modals/EditProfileModal.vue";
 import { computed } from "@vue/runtime-core";
-import { useStore } from "vuex";
+import { useConfigStore } from '../stores/configStore';
 import { useConfirmDialog } from "@vueuse/core";
 
-const store = useStore();
+// statics
+import defaultImg from '@/assets/img/default_profile_cover.jpg'
+
+const configStore = useConfigStore();
 
 const { isRevealed: isEditProfileModalRevealed, reveal: openEditProfileModal, cancel: closeEditProfileModal } = useConfirmDialog();
 
 const config = computed(() => {
-  return store.getters?.formattedConfig;
+  return configStore?.formattedConfig;
 });
 
 const profilePageStatusData = computed(() => {

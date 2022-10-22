@@ -77,10 +77,10 @@ import useSendRequest from '@/composables/useSendRequest';
 import { isASubSet } from "@/helpers/compare";
 import { ref, computed, onMounted } from "@vue/runtime-core";
 import { useRouter } from "vue-router";
-import { useStore } from "vuex";
+import { useConfigStore } from '../../stores/configStore';
   
   const router = useRouter();
-  const store = useStore();
+  const configStore = useConfigStore();
   const props = defineProps({
     position_id: { type: String, required: true }
   })
@@ -110,7 +110,7 @@ import { useStore } from "vuex";
     });
   });
   const position = computed(() => {
-    return store.getters.formattedConfig?.positions.find((position) => position._id === props.position_id);
+    return configStore.formattedConfig?.positions.find((position) => position._id === props.position_id);
   });
   // composables
   const { data: users, paginated_res, error: getUsersError, load: getUsers, isPending: loading } = getPaginatedData("/users", currentPage);
