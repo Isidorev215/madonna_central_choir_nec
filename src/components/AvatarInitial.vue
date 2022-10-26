@@ -1,5 +1,13 @@
 <template>
-  <img v-if="image" :src="image" />
+  <img v-if="image" :src="image" class="avatar-image imaged flex justify-center items-center bg-gray-100 dark:bg-slate-800" :class="{rounded: dimension == 100}" :style="{
+    width: width,
+    height: height,
+    font: font,
+    color: '#fff',
+    borderRadius: rounded +'px',
+    padding: width / 10 +'px',
+  }" 
+  />
   <div v-else class="avatar-initials imaged flex justify-center items-center" :class="{rounded: dimension == 100}" ref="avatar" :style="{
     backgroundColor: colors[colorIndex],
     width: width,
@@ -21,6 +29,7 @@ export default {
     name: {type: String, required: true},
     rounded: {type: Number, default: 10},
     dimension: Number,
+    dimensionType: {type: String}
   },
   data(){
     return{
@@ -33,14 +42,20 @@ export default {
   },
   computed: {
     width(){
-      if(this.dimension){
+      if(this.dimensionType === 'percent'){
+        return `${this.dimension}%`
+      }
+      else if(this.dimension){
         return `${this.dimension}px`
       }else{
         return '40px'
       }
     },
     height(){
-      if(this.dimension){
+      if(this.dimensionType === 'percent'){
+        return `${this.dimension}%`
+      }
+      else if(this.dimension){
         return `${this.dimension}px`
       }else{
         return '40px'

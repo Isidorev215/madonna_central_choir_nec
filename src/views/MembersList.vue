@@ -102,16 +102,11 @@
                         {{user.isRegularized ? 'Regularized' : 'Faulting'}}
                       </div>
                     </td>
-                    <td class="quick_action font-normal text-base p-4 whitespace-nowrap">
-                      <button @click="takeActionOnUser = user" type="button">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                      </button>
-                    </td>
                     <td class="p-4 whitespace-nowrap space-x-2">
-                      <router-link :to="{name: 'singleMember', params: { id: user._id }}" type="button" data-modal-toggle="user-modal" class="text-white font-normal text-sm text-center py-2 px-3 bg-mcc-blue rounded items-center inline-flex active:ring ring-blue-200">
+                      <button @click="takeActionOnUser = user" type="button" data-modal-toggle="user-modal" class="text-white font-normal text-sm text-center py-2 px-3 bg-mcc-blue rounded items-center inline-flex active:ring ring-blue-200">
                         <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M15 11h7v2h-7zm1 4h6v2h-6zm-2-8h8v2h-8zM4 19h10v-1c0-2.757-2.243-5-5-5H7c-2.757 0-5 2.243-5 5v1h2zm4-7c1.995 0 3.5-1.505 3.5-3.5S9.995 5 8 5 4.5 6.505 4.5 8.5 6.005 12 8 12z"></path></svg>
                         Details
-                      </router-link>
+                      </button>
                     </td>
                   </tr>
                 </tbody>
@@ -131,7 +126,8 @@
     </section>
 
     <teleport to="body">
-      <MembersListQuickAction v-if="takeActionOnUser" :user="takeActionOnUser" @closeModal="takeActionOnUser = null" />
+      <!-- <MembersListQuickAction v-if="takeActionOnUser" :user="takeActionOnUser" @closeModal="takeActionOnUser = null" /> -->
+      <SingleUserModal v-if="takeActionOnUser" :user="takeActionOnUser" @closeModal="takeActionOnUser = null" />
     </teleport>
   </div>
 </template>
@@ -139,6 +135,7 @@
 <script setup>
 import PositionsDropDown from '@/components/PositionsDropDown.vue';
 import MembersListQuickAction from '@/components/Modals/MembersListQuickAction.vue';
+import SingleUserModal from '@/components/Modals/SingleUserModal.vue';
 import getPaginatedData from '@/composables/getPaginatedData';
 import { useToggle } from '@vueuse/core'
 import { computed, onMounted, reactive, ref } from "vue";
@@ -185,6 +182,7 @@ const filteredUsers = computed(() => {
       birthday: user?.birthday ? moment(user?.birthday).format('MMMM Do YYYY') : null,
       regularizedAt: user?.regularizedAt ? moment(user?.regularizedAt).format('MMMM Do YYYY') : null,
       graduatedAt: user?.graduatedAt ? moment(user?.graduatedAt).format('MMMM Do YYYY') : null,
+      approvedAt: user?.approvedAt ? moment(user?.approvedAt).format('MMMM Do YYYY') : null,
     }
   })
   let result = dateFormatUsers.filter(user => {

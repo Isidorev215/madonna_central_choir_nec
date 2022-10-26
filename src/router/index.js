@@ -57,17 +57,18 @@ const router = createRouter({
       },
       meta: { name: "Members List" },
     },
-    {
-      path: "/member/:id",
-      name: "singleMember",
-      beforeEnter: checkForToken,
-      components: {
-        default: SingleMember,
-        nav: Navbar,
-        footer: Footer,
-      },
-      meta: { name: "Member Details" },
-    },
+    // {
+    //   // removed this route, using the former modal instaed
+    //   path: "/member/:id",
+    //   name: "singleMember",
+    //   beforeEnter: checkForToken,
+    //   components: {
+    //     default: SingleMember,
+    //     nav: Navbar,
+    //     footer: Footer,
+    //   },
+    //   meta: { name: "Member Details" },
+    // },
     {
       path: "/chapters",
       name: "ManageChapters",

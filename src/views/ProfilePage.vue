@@ -189,17 +189,22 @@
             <div class="py-3">
               <div class="ltr:text-left trl:text-right">
                 <p class="mb-2">
-                  <strong>Birthday: </strong>
-                  <span class="ml-2">{{ config?.birthday ?? "unset" }}</span>
-                </p>
-                <p class="mb-2">
-                  <strong>Graduation: </strong>
-                  <span class="ml-2">{{ config?.graduatedAt ?? "unset" }}</span>
+                  <strong>Approval: </strong>
+                  <span class="ml-2">{{ config?.approvedAt }}</span>
+                  <span v-if="!config?.approvedAt" class="ml-2 text-red-500">Account Pending</span>
                 </p>
                 <p class="mb-2">
                   <strong>Regularization: </strong>
-                  <span class="ml-2">{{ config?.RegularizedAt }}</span>
-                  <span v-if="!config?.regularizedAt" class="ml-2 text-red-500">Faulting</span>
+                  <span class="ml-2">{{ config?.regularizedAt }}</span>
+                  <span v-if="!config?.regularizedAt" class="ml-2 text-red-500">Admin Action</span>
+                </p>
+                <p class="mb-2">
+                  <strong>Graduation: </strong>
+                  <span class="ml-2">{{ config?.graduatedAt ?? "---" }}</span>
+                </p>
+                <p class="mb-2">
+                  <strong>Birthday: </strong>
+                  <span class="ml-2">{{ config?.birthday ?? "---" }}</span>
                 </p>
               </div>
             </div>
@@ -233,6 +238,10 @@ const profilePageStatusData = computed(() => {
   return {
     lastMeeting: config.value?.meetings[config.value?.meetings.length - 1],
     lastDue: config.value?.dues[config.value?.dues.length - 1],
+    approval: {
+      isApproved: config.value?.isApproved,
+      approvedAt: config.value?.approvedAt
+    },
     regularization: {
       isRegularized: config.value?.isRegularized,
       regularizedAt: config.value?.regularizedAt,

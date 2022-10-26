@@ -15,6 +15,7 @@ export const useConfigStore = defineStore('configStore', {
         birthday: this.config?.birthday ? moment(this.config?.birthday).format('MMMM Do YYYY') : null,
         regularizedAt: this.config?.regularizedAt ? moment(this.config?.regularizedAt).format('MMMM Do YYYY') : null,
         graduatedAt: this.config?.graduatedAt ? moment(this.config?.graduatedAt).format('MMMM Do YYYY') : null,
+        approvedAt: this.config?.approvedAt ? moment(this.config?.approvedAt).format('MMMM Do YYYY') : null,
 
       }
     }

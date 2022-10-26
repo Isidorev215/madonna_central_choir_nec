@@ -16,7 +16,7 @@
       <div class="left col-span-1">
         <div class="profile-card p-4 sm:p-6 xl:p-8 shadow bg-white rounded-lg mb-4">
           <div class="flex md:block xl:flex space-x-2 md:space-x-0 xl:space-x-2">
-            <AvatarInitial class="mb-2" v-if="user" :name="`${user?.firstName} ${user?.lastName}`" :dimension="80" :rounded="8" :image="user?.profileImage" />
+            <AvatarInitial :image="user?.profileImage" class="mb-2" v-if="user" :name="`${user?.firstName} ${user?.lastName}`" :dimension="80" :rounded="8" />
             <div>
               <h2 class="font-bold text-lg">{{ user?.firstName }} {{ user?.lastName }}</h2>
               <ul class="mt-2">

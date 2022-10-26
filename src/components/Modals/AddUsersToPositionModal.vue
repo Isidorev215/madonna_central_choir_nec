@@ -54,7 +54,7 @@
         <ul class="w-full flex flex-col justify-start items-start space-y-4 h-full max-h-[500px] overflow-y-auto">
           <li class="w-full flex justify-between items-center space-x-6" v-for="user in selectedUsers" :key="user._id">
             <div class="flex-auto w-[250px] flex justify-start items-start space-x-2">
-              <AvatarInitial :name="`${user.firstName} ${user.lastName}`" :dimension="35" :rounded="9999" class="w-14 h-auto align-middle" />
+              <AvatarInitial :image="user.profileImage" :name="`${user.firstName} ${user.lastName}`" :dimension="35" :rounded="9999" class="w-14 h-auto align-middle" />
               <div class="desc flex flex-col justify-center items-start">
                 <strong class="text-base font-normal">{{ user.firstName }} {{ user.lastName }}</strong>
               </div>

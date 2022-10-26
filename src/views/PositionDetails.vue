@@ -36,7 +36,7 @@
             <ul v-if="position.holders.length > 0" class="current-holders-list">
               <li v-for="holder in position.holders" :key="holder._id" class="flex space-y-3 mb-2 last:mb-6">
                 <div class="flex-auto w-[200px] lg:w-[250px] flex justify-start items-center space-x-2">
-                  <AvatarInitial :name="`${holder.firstName} ${holder.lastName}`" :dimension="35" :rounded="9999" class="w-14 h-auto align-middle" />
+                  <AvatarInitial :image="holder.profileImage" :name="`${holder.firstName} ${holder.lastName}`" :dimension="35" :rounded="9999" class="w-14 h-auto align-middle" />
                   <div class="desc flex flex-col justify-center items-start">
                     <strong class="text-base font-normal">{{holder.firstName}} {{holder.lastName}}</strong>
                   </div>

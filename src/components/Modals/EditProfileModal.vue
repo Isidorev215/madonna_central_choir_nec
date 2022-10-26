@@ -128,7 +128,23 @@
               label-class="$reset block mb-1 text-base capitalize"
               validation-visibility="blur"
             />
+            <FormKit 
+              type="tel"
+              label="Phone"
+              name="phone"
+              placeholder="xxxx-xxx-xxxx"
+              validation="matches:/^[0-9]{4}-[0-9]{3}-[0-9]{4}$/"
+              :validation-messages="{
+                matches: 'Phone number must be in the format xxx-xxx-xxxx',
+              }"
+              outer-class="$reset form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-2"
+              wrapper-class="$reset w-full flex flex-col justify-start"
+              label-class="$reset block mb-1 text-base capitalize"
+              validation-visibility="blur"
+            />
+
             <div class="w-full border-t border-gray-200 my-3 dark:border-gray-700"></div>
+
             <FormKit 
               type="select"
               label="marital status"

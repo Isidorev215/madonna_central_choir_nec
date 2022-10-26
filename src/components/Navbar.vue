@@ -33,7 +33,7 @@
       <div class="profile-drop h-full dropdown relative" ref="profileRoot">
         <button @click="toggleProfileDrop()" data-dropdown-toggle="dropdown" class="text-black relative font-medium lg:py-2 lg:px-3 lg:ring-1 ring-dark-gray-2 rounded-md text-sm text-center inline-flex items-center" type="button">
           <!-- <img v-if="user && user.profile_image" class="w-10 h-10 rounded-[10px] align-middle" :src="user.profile_image"> -->
-          <AvatarInitial :name="`${config?.firstName} ${config?.lastName}`" :dimension="30" :rounded="9999" class="w-14 h-auto align-middle" />
+          <AvatarInitial :image="config?.profileImage" :name="`${config?.firstName} ${config?.lastName}`" :dimension="30" :rounded="9999" class="w-14 h-auto align-middle" />
           <span class="hidden lg:flex justify-center items-center font-medium text-base ml-2">{{`${config?.firstName} ${config?.lastName}`}}</span>
           <svg class="w-4 h-4 ml-2 hidden lg:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
