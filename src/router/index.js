@@ -6,10 +6,10 @@ import Dashboard from "../views/Dashboard.vue";
 import Login from "../views/Auths/Login.vue";
 import Register from "../views/Auths/Register.vue";
 import MembersList from "../views/MembersList.vue";
-import SingleMember from "../views/SingleMember.vue";
 import ProfilePage from "../views/ProfilePage.vue";
 import ManageChapters from "../views/ManageChapters.vue";
 import PositionDetails from "../views/PositionDetails.vue";
+import SingleMember from "../views/SingleMember.vue";
 import moment from "moment";
 
 

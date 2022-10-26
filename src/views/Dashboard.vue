@@ -111,8 +111,8 @@
                     <th class="px-6 bg-gray-50 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left min-w-140-px"></th>
                   </tr>
                 </thead>
-                <tbody v-if="config?.positions.length > 0">
-                  <tr v-for="position in config.positions" :key="position">
+                <tbody v-if="positions.length > 0">
+                  <tr v-for="position in positions" :key="position">
                     <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left capitalize">{{position.name}}</th>
                     <td class="border-t-0  align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{ position.holders.length > 0 ? position.holders.length : 'Empty' }}</td>
                     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
@@ -123,7 +123,7 @@
                   </tr>
                 </tbody>
               </table>
-              <div class="flex justify-center p-2" v-if="config?.positions.length === 0">
+              <div class="flex justify-center p-2" v-if="positions.length === 0">
                 <div class="w-full p-2 border-l-red-800 border-l-4 bg-red-500 text-white">
                   You are yet to create positions
                 </div>
@@ -143,8 +143,9 @@ import { useConfirmDialog } from "@vueuse/core";
 import { useConfigStore } from '../stores/configStore';
   
   const configStore = useConfigStore();
-  const config = computed(() => {
-    return configStore?.formattedConfig;
+
+  const positions = computed(() => {
+    return configStore?.config?.positions;
   });
 
   const { isRevealed: isPositionModalRevealed, reveal: openPositionModal, cancel: closePositionModal } = useConfirmDialog();

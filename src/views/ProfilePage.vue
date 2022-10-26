@@ -6,7 +6,7 @@
     <div class="flex-shrink max-w-full px-4 w-full mb-6">
       <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md mb-8">
         <div class="group h-40 overflow-hidden relative">
-          <img :src="config?.coverImage ? config?.coverImage : defaultImg" class="w-full" />
+          <img :src="user?.coverImage ? user?.coverImage : defaultImg" class="w-full" />
           <div class="absolute top-4 right-2">
             <button @click="openEditProfileModal" type="button" class="group-hover:opacity-80 opacity-0 py-1.5 px-3 inline-block text-center mb-3 rounded leading-5 text-gray-800 bg-gray-200 border border-gray-200 hover:text-gray-900 hover:bg-gray-300 hover:ring-0 hover:border-gray-300 focus:bg-gray-300 focus:border-gray-300 focus:outline-none focus:ring-0">
               Edit cover
@@ -19,7 +19,7 @@
         </div>
         <div class="flex justify-center -mt-10 relative">
           <a @click="openEditProfileModal" class="z-30 group">
-            <AvatarInitial :image="config.profileImage" :name="`${config.firstName} ${config.lastName}`" :dimension="96" :rounded="9999" class="rounded-full w-24 h-24 bg-gray-200 border-solid border-white border-2 -mt-3" />
+            <AvatarInitial :image="user.profileImage" :name="`${user.firstName} ${user.lastName}`" :dimension="96" :rounded="9999" class="rounded-full w-24 h-24 bg-gray-200 border-solid border-white border-2 -mt-3" />
 
             <div title="Change avatar" class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 bg-gray-400 p-2 rounded-full text-white dark:text-gray-900">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-6 h-6 bi bi-camera" viewBox="0 0 16 16">
@@ -30,8 +30,8 @@
           </a>
         </div>
         <div class="text-center px-3 pb-6 pt-2 flex justify-center items-center space-x-2">
-          <h3 class="text-gray-800 dark:text-gray-100 font-bold text-lg">{{ config?.firstName }} {{ config?.lastName }}</h3>
-          <span v-if="config?.roles.includes('Admin')" class="px-2 py-1 flex items-center font-semibold text-xs rounded bg-blue-500 border-blue-500 text-white" :class="[config?.isApproved ? 'success' : 'failure']">Admin</span>
+          <h3 class="text-gray-800 dark:text-gray-100 font-bold text-lg">{{ user?.firstName }} {{ user?.lastName }}</h3>
+          <span v-if="user?.roles.includes('Admin')" class="px-2 py-1 flex items-center font-semibold text-xs rounded bg-blue-500 border-blue-500 text-white" :class="[user?.isApproved ? 'success' : 'failure']">Admin</span>
         </div>
       </div>
 
@@ -61,49 +61,49 @@
               <div class="ltr:text-left rtl:text-right">
                 <p class="mb-2">
                   <strong>Full Name :</strong>
-                  <span class="ml-2">{{ config?.firstName }} {{ config?.lastName }}</span>
+                  <span class="ml-2">{{ user?.firstName }} {{ user?.lastName }}</span>
                 </p>
                 <p class="mb-2">
                   <strong>Email :</strong>
-                  <span class="ml-2">{{ config?.email }}</span>
+                  <span class="ml-2">{{ user?.email }}</span>
                 </p>
                 <p class="mb-2">
                   <strong>Mobile :</strong>
-                  <span class="ml-2">{{ config?.phone ?? "unset" }}</span>
+                  <span class="ml-2">{{ user?.phone ?? "unset" }}</span>
                 </p>
                 <p class="mb-2">
                   <strong>Occupation :</strong>
-                  <span class="ml-2">{{ config?.occupation ?? "unset" }}</span>
+                  <span class="ml-2">{{ user?.occupation ?? "unset" }}</span>
                 </p>
                 <p class="mb-2">
                   <strong>Location :</strong>
-                  <span class="ml-2">{{ config?.state ?? "unset" }} {{ config?.state ? config?.country : null }}</span>
+                  <span class="ml-2">{{ user?.state ?? "unset" }} {{ user?.state ? user?.country : null }}</span>
                 </p>
               </div>
               <div class="border-t border-gray-200 my-3 dark:border-gray-700"></div>
               <div class="ltr:text-left rtl:text-right">
                 <p class="mb-2">
                   <strong>Marital status :</strong>
-                  <span class="ml-2">{{ config?.maritalStatus ?? "unset" }}</span>
+                  <span class="ml-2">{{ user?.maritalStatus ?? "unset" }}</span>
                 </p>
                 <p class="mb-2">
                   <strong>Chapter :</strong>
-                  <span class="ml-2">{{ config?.chapter ?? "unset" }}</span>
+                  <span class="ml-2">{{ user?.chapter ?? "unset" }}</span>
                 </p>
                 <p class="mb-2">
                   <strong>Campus :</strong>
-                  <span class="ml-2">{{ config?.campus ?? "unset" }}</span>
+                  <span class="ml-2">{{ user?.campus ?? "unset" }}</span>
                 </p>
                 <p class="mb-2">
                   <strong>Choir Part :</strong>
-                  <span class="ml-2">{{ config?.choirPart ?? "unset" }}</span>
+                  <span class="ml-2">{{ user?.choirPart ?? "unset" }}</span>
                 </p>
                 <div class="mb-2">
                   <strong>Church :</strong>
-                  <span class="ml-2">{{ config?.church?.churchName ?? "unset" }}</span>
-                  <p class="">{{ config?.church?.denomination ? `${config?.church.denomination}, Church`: '' }}</p>
-                  <p class="">{{ config?.church?.city ? `${config?.church?.city},` : '' }} {{ config?.church?.state }}.</p>
-                  <p class="">{{ config?.church?.country }}.</p>
+                  <span class="ml-2">{{ user?.church?.churchName ?? "unset" }}</span>
+                  <p class="">{{ user?.church?.denomination ? `${user?.church.denomination}, Church`: '' }}</p>
+                  <p class="">{{ user?.church?.city ? `${user?.church?.city},` : '' }} {{ user?.church?.state }}.</p>
+                  <p class="">{{ user?.church?.country }}.</p>
                 </div>
               </div>
             </div>
@@ -118,7 +118,7 @@
             </div>
             <div class="relative">
               <ol class="h-96 overflow-y-auto scrollbars show mb-6">
-                <li v-for="meeting in config.meetings" :key="meeting._id" class="flex">
+                <li v-for="meeting in user.meetings" :key="meeting._id" class="flex">
                   <div class="relative flex-shrink-0 w-12 text-center">
                     <span class="absolute left-1/2 -ml-1 top-10 -bottom-4 border-l-2 border-dashed border-gray-200 dark:border-gray-700"></span>
                     <div class="mr-auto">
@@ -149,7 +149,7 @@
             </div>
             <div class="relative">
               <ol class="h-96 overflow-y-auto scrollbars show mb-6">
-                <li v-for="due in config.dues" :key="due._id" class="flex">
+                <li v-for="due in user.dues" :key="due._id" class="flex">
                   <div class="relative flex-shrink-0 w-12 text-center">
                     <span class="absolute left-1/2 -ml-1 top-10 -bottom-4 border-l-2 border-dashed border-gray-200 dark:border-gray-700"></span>
                     <div class="mr-auto">
@@ -190,21 +190,21 @@
               <div class="ltr:text-left trl:text-right">
                 <p class="mb-2">
                   <strong>Approval: </strong>
-                  <span class="ml-2">{{ config?.approvedAt }}</span>
-                  <span v-if="!config?.approvedAt" class="ml-2 text-red-500">Account Pending</span>
+                  <span class="ml-2 text-sm">{{ user?.approvedAt }}</span>
+                  <span v-if="!user?.approvedAt" class="ml-2 text-sm text-red-500">Account Pending</span>
                 </p>
                 <p class="mb-2">
                   <strong>Regularization: </strong>
-                  <span class="ml-2">{{ config?.regularizedAt }}</span>
-                  <span v-if="!config?.regularizedAt" class="ml-2 text-red-500">Admin Action</span>
+                  <span class="ml-2 text-sm">{{ user?.regularizedAt }}</span>
+                  <span v-if="!user?.regularizedAt" title="Requires admin action" class="ml-2 text-sm text-red-500 cursor-help">Admin</span>
                 </p>
                 <p class="mb-2">
                   <strong>Graduation: </strong>
-                  <span class="ml-2">{{ config?.graduatedAt ?? "---" }}</span>
+                  <span class="ml-2 text-sm">{{ user?.graduatedAt ?? "---" }}</span>
                 </p>
                 <p class="mb-2">
                   <strong>Birthday: </strong>
-                  <span class="ml-2">{{ config?.birthday ?? "---" }}</span>
+                  <span class="ml-2 text-sm">{{ user?.birthday ?? "---" }}</span>
                 </p>
               </div>
             </div>
@@ -212,7 +212,7 @@
         </div>
       </div>
     </div>
-    <EditProfileModal v-if="isEditProfileModalRevealed" :user="config" @closeModal="closeEditProfileModal" />
+    <EditProfileModal v-if="isEditProfileModalRevealed" :user="user" @closeModal="closeEditProfileModal" />
   </div>
 </template>
 
@@ -230,21 +230,21 @@ const configStore = useConfigStore();
 
 const { isRevealed: isEditProfileModalRevealed, reveal: openEditProfileModal, cancel: closeEditProfileModal } = useConfirmDialog();
 
-const config = computed(() => {
-  return configStore?.formattedConfig;
+const user = computed(() => {
+  return configStore?.user;
 });
 
 const profilePageStatusData = computed(() => {
   return {
-    lastMeeting: config.value?.meetings[config.value?.meetings.length - 1],
-    lastDue: config.value?.dues[config.value?.dues.length - 1],
+    lastMeeting: user.value?.meetings[user.value?.meetings.length - 1],
+    lastDue: user.value?.dues[user.value?.dues.length - 1],
     approval: {
-      isApproved: config.value?.isApproved,
-      approvedAt: config.value?.approvedAt
+      isApproved: user.value?.isApproved,
+      approvedAt: user.value?.approvedAt
     },
     regularization: {
-      isRegularized: config.value?.isRegularized,
-      regularizedAt: config.value?.regularizedAt,
+      isRegularized: user.value?.isRegularized,
+      regularizedAt: user.value?.regularizedAt,
     },
   };
 });

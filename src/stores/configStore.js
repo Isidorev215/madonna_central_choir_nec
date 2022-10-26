@@ -9,13 +9,13 @@ export const useConfigStore = defineStore('configStore', {
     isPending: false,
   }),
   getters: {
-    formattedConfig(){
+    user(){
       return {
-        ...this.config,
-        birthday: this.config?.birthday ? moment(this.config?.birthday).format('MMMM Do YYYY') : null,
-        regularizedAt: this.config?.regularizedAt ? moment(this.config?.regularizedAt).format('MMMM Do YYYY') : null,
-        graduatedAt: this.config?.graduatedAt ? moment(this.config?.graduatedAt).format('MMMM Do YYYY') : null,
-        approvedAt: this.config?.approvedAt ? moment(this.config?.approvedAt).format('MMMM Do YYYY') : null,
+        ...this.config.user,
+        birthday: this.config?.user?.birthday ? moment(this.config?.user?.birthday).format('MMM Do YYYY') : null,
+        regularizedAt: this.config?.user?.regularizedAt ? moment(this.config?.user?.regularizedAt).format('MMM Do YYYY') : null,
+        graduatedAt: this.config?.user?.graduatedAt ? moment(this.config?.user?.graduatedAt).format('MMM Do YYYY') : null,
+        approvedAt: this.config?.user?.approvedAt ? moment(this.config?.user?.approvedAt).format('MMM Do YYYY') : null,
 
       }
     }

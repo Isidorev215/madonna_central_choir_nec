@@ -177,7 +177,7 @@ const { isPending: updating, error: updatingError, updateDocument } = useSendReq
 const { reveal: openAddUsersModal, isRevealed: isAddUsersModalOpen, cancel: closeAddUsersModal } = useConfirmDialog();
 
 const position = computed(() => {
-  return configStore.formattedConfig?.positions.find((position) => position._id === route.params.id);
+  return configStore.config?.positions.find((position) => position._id === route.params.id);
 });
 
 // handling duties

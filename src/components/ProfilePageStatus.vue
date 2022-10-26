@@ -2,7 +2,7 @@
   <div class="flex flex-wrap lg:shadow-md lg:rounded-lg flex-row mb-8">
     <div class="flex-shrink max-w-full w-full lg:w-2/4 xl:w-1/4 mb-2 lg:mb-0">
       <div class="bg-white dark:bg-gray-800 rounded-lg lg:rounded-none lg:rounded-l-lg shadow-md lg:shadow-none h-full p-6 relative overflow-hidden">
-        <h3 class="text-base font-bold mb-2">Approval</h3>
+        <h3 class="text-base font-bold mb-2">Account Approval</h3>
         <h2 class="text-3xl font-bold mb-4" :class="[status.approval.isApproved ? 'text-green-500' : 'text-red-400']">{{status.approval.isApproved ? 'Done' : 'Not Done'}}</h2>
         <!-- target -->
         <div class="flex flex-row justify-between w-full">

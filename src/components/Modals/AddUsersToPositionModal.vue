@@ -30,7 +30,7 @@
                 <label class="text-lg" for="primeCheckBox">Select All</label>
               </div>
 
-              <ul class="w-full flex flex-col justify-start items-start space-y-3 md:space-y-4 max-h-[400px] overflow-y-auto">
+              <ul class="w-full flex flex-col justify-start items-start space-y-3 md:space-y-4 max-h-[350px] overflow-y-auto">
                 <li class="flex justify-start items-center space-x-3 md:space-x-5" v-for="user in filteredUsers" :key="user._id">
                   <input class="flex-none h-4 md:h-5 w-4 md:w-5 accent-normal-green" type="checkbox" ref="userCheckBoxes" :id="user._id" @click="selectUser($event, user._id)" />
                   <label class="flex-auto w-[200px] md:w-[250px] flex justify-start items-center space-x-2" :for="user._id">
@@ -41,6 +41,12 @@
                   </label>
                 </li>
               </ul>
+              
+              <div class="tai-note">
+                <p class="text-red-600">** Adding a user to a position removes them from other positions **</p>
+                <p class="text-red-600">** A member cannot hold more than one position **</p>
+              </div>
+
               <div class="pagination-wrapper w-full">
                 <Pagination :total="paginated_res?.total" :perPage="paginated_res?.perPage" :currentPage="currentPage" @pagechanged="onPageChange" />
               </div>
@@ -110,7 +116,7 @@ import { useConfigStore } from '../../stores/configStore';
     });
   });
   const position = computed(() => {
-    return configStore.formattedConfig?.positions.find((position) => position._id === props.position_id);
+    return configStore.config?.positions.find((position) => position._id === props.position_id);
   });
   // composables
   const { data: users, paginated_res, error: getUsersError, load: getUsers, isPending: loading } = getPaginatedData("/users", currentPage);

@@ -3,7 +3,7 @@
     <section class="members-list bg-white lg:max-w-7xl lg:mx-auto rounded-lg shadow-lg pt-4">
       <div class="top-section flex border-gray-100 border-b-2 justify-between items-center">
         <div class="inner w-full mb-1">
-          <div class="search-bar flex flex-col md:flex-row space-y-3 md:space-y-0 p-4">
+          <div class="search-bar flex flex-col md:flex-row md:justify-between space-y-3 md:space-y-0 p-4">
             <div class="search-wrapper w-full md:w-auto flex mb-0 items-center divide-x divide-gray-400">
               <FormKit 
                 form-class="md:pr-3 w-full" 
@@ -15,18 +15,35 @@
                 <FormKit 
                   v-model="filters.searchTerm"
                   type="search" 
-                  label-class="$reset hidden"
-                  outer-class="$reset mb-0" 
                   placeholder="Search by Name" 
-                  label="Search" 
                 />
               </FormKit>
             </div>
-            <div class="buttons-wrapper flex ml-auto items-center space-x-2">
-              <div class="positions-drop h-full dropdown relative" ref="positionsDropRoot">
-                <button @click="togglePositionsDrop()" type="button" class="w-auto text-white font-medium text-sm text-center py-2 px-3 bg-mcc-blue rounded justify-center items-center inline-flex">
-                  <svg class="w-4 md:w-6 h-4 md:h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"></path></svg>
-                  Update Positions
+            <div class="buttons-wrapper flex flex-col md:flex-row md:space-x-2">
+              <div class="w-full flex items-center md:justify-end space-x-2">
+                <FormKit
+                  type="select"
+                  v-model="filters.approval"
+                  :options="[
+                    { label: 'Approval Status', value: 'No value' },
+                    { label: 'Approved', value: true },
+                    { label: 'Awaiting', value: false },
+                  ]"
+                />
+                <FormKit
+                  type="select"
+                  v-model="filters.regularization"
+                  :options="[
+                    { label: 'Regularization Status', value: 'No value' },
+                    { label: 'Regularized', value: true },
+                    { label: 'Faulting', value: false },
+                  ]"
+                />
+              </div>
+              <div class="positions-drop dropdown relative" ref="positionsDropRoot">
+                <button @click="togglePositionsDrop()" type="button" class="w-auto text-white text-sm text-center py-2.5 px-3 bg-mcc-blue rounded justify-center items-center inline-flex">
+                  <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"></path></svg>
+                  Positions
                 </button>
                 <div 
                   :class="{'hidden': positionsDrop === false, 'block': positionsDrop === true }" 
@@ -46,34 +63,13 @@
               <table class="table-fixed min-w-full">
                 <thead class="bg-gray-200">
                   <tr>
-                    <th scope="col" class="uppercase text-gray-600 font-medium text-sm text-left px-4 pt-4">Name</th>
-                    <th scope="col" class="uppercase text-gray-600 font-medium text-sm text-left px-4 pt-4">Position</th>
-                    <th scope="col" class="uppercase text-gray-600 font-medium text-sm text-left px-4 pt-4">Chapter</th>
-                    <th scope="col" class="uppercase text-gray-600 font-medium text-sm text-left px-4 pt-4">Campus</th>
-                    <th scope="col" class="uppercase text-gray-600 font-medium text-sm text-left px-4 pt-4">
-                      <FormKit 
-                        type="select"
-                        v-model="filters.approval"
-                        :options="[
-                          { label: 'Approval Status', value: 'No value' },
-                          { label: 'Approved', value: true },
-                          { label: 'Awaiting', value: false },
-                        ]"
-                      />
-                    </th>
-                    <th scope="col" class="uppercase text-gray-600 font-medium text-sm text-left px-4 pt-4">
-                      <FormKit 
-                        type="select"
-                        v-model="filters.regularization"
-                        :options="[
-                          { label: 'Regularization Status', value: 'No value' },
-                          { label: 'Regularized', value: true },
-                          { label: 'Faulting', value: false },
-                        ]"
-                      />
-                    </th>
-                    <th scope="col" class="px-4 pt-4"></th>
-                    <th scope="col" class="px-4 pt-4"></th>
+                    <th scope="col" class="uppercase text-gray-600 font-medium text-sm text-left px-4 py-4">Name</th>
+                    <th scope="col" class="uppercase text-gray-600 font-medium text-sm text-left px-4 py-4">Position</th>
+                    <th scope="col" class="uppercase text-gray-600 font-medium text-sm text-left px-4 py-4">Chapter</th>
+                    <th scope="col" class="uppercase text-gray-600 font-medium text-sm text-left px-4 py-4">Campus</th>
+                    <th scope="col" class="uppercase text-gray-600 font-medium text-sm text-left px-4 py-4">Approval</th>
+                    <th scope="col" class="uppercase text-gray-600 font-medium text-sm text-left px-4 py-4">Regularization</th>
+                    <th scope="col" class="px-4 py-4"></th>
                   </tr>
                 </thead>
                 <tbody v-if="filteredUsers.length > 0" class="bg-white divide-y divide-opacity-100 border-gray-300">
@@ -103,10 +99,7 @@
                       </div>
                     </td>
                     <td class="p-4 whitespace-nowrap space-x-2">
-                      <button @click="takeActionOnUser = user" type="button" data-modal-toggle="user-modal" class="text-white font-normal text-sm text-center py-2 px-3 bg-mcc-blue rounded items-center inline-flex active:ring ring-blue-200">
-                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M15 11h7v2h-7zm1 4h6v2h-6zm-2-8h8v2h-8zM4 19h10v-1c0-2.757-2.243-5-5-5H7c-2.757 0-5 2.243-5 5v1h2zm4-7c1.995 0 3.5-1.505 3.5-3.5S9.995 5 8 5 4.5 6.505 4.5 8.5 6.005 12 8 12z"></path></svg>
-                        Details
-                      </button>
+                      <button @click="takeActionOnUser = user" type="button" data-modal-toggle="user-modal" class="bg-indigo-500 text-white text-xs px-3 py-1 rounded-sm">more</button>
                     </td>
                   </tr>
                 </tbody>
@@ -199,7 +192,7 @@ const filteredUsers = computed(() => {
   return result;
 })
 const positions = computed(() => {
-  return configStore?.formattedConfig?.positions;
+  return configStore?.config?.positions;
 });
 
 
